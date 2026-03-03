@@ -14,9 +14,7 @@ import {
   Fingerprint, 
   ArrowLeft,
   Verified,
-  Loader2,
-  Facebook,
-  Linkedin
+  Loader2
 } from 'lucide-react'
 import jsPDF from 'jspdf'
 import { domToCanvas } from 'modern-screenshot'
@@ -40,9 +38,10 @@ function CertificateContent() {
     setWindowSize({ width: window.innerWidth, height: window.innerHeight });
     setCurrentDate(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
     
-    // SYNCED LOGIC: Matches verification page ID generation
+    // MATCHED LOGIC: Calculating hash and ID exactly like the verify page
     const hash = userName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    setCertId(`NCR-HUB-${hash}-${Math.floor(1000 + (hash % 8999))}`);
+    const generatedId = `NCR-HUB-${hash}-${Math.floor(1000 + (hash % 8999))}`;
+    setCertId(generatedId);
   }, [userName]);
 
   const getVerifyUrl = () => {
@@ -58,8 +57,8 @@ function CertificateContent() {
 
     try {
       const canvas = await domToCanvas(certificateRef.current, {
-        scale: 2, 
-        backgroundColor: "#ffffff",
+        scale: 2,
+        backgroundColor: '#ffffff',
       });
       
       const imgData = canvas.toDataURL('image/jpeg', 0.98);
@@ -73,21 +72,18 @@ function CertificateContent() {
       pdf.save(`Certificate_${userName.replace(/\s+/g, '_')}.pdf`);
     } catch (error) {
       console.error("PDF Generation failed", error);
-      alert("Error generating PDF.");
+      alert("Render failed. Please try again.");
     } finally {
       setIsDownloading(false);
     }
   };
 
-  const handleShare = (platform: 'whatsapp' | 'linkedin' | 'twitter' | 'facebook') => {
+  const handleShare = (platform: 'whatsapp' | 'linkedin') => {
     const verifyUrl = getVerifyUrl();
     const message = `🛡️ I am officially a Certified Cyber-Commander! Verify my credential here: ${verifyUrl}`;
-    
     const urls = {
       whatsapp: `https://wa.me/?text=${encodeURIComponent(message)}`,
       linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(verifyUrl)}`,
-      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}`,
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(verifyUrl)}`
     };
     window.open(urls[platform], '_blank', 'noreferrer,noopener');
   };
@@ -102,20 +98,21 @@ function CertificateContent() {
     <main className={`min-h-screen bg-[#0a0c10] flex flex-col items-center justify-center p-4 md:p-8 ${sans.className}`}>
       <Confetti width={windowSize.width} height={windowSize.height} recycle={false} numberOfPieces={300} gravity={0.12} />
 
-      {/* CERTIFICATE DISPLAY */}
       <div className="relative w-full max-w-[1000px] aspect-[1.414/1]">
         <div className="absolute -inset-1 bg-blue-600/20 rounded-xl blur-lg"></div>
+        
         <div 
           ref={certificateRef}
           className="relative bg-white h-full shadow-2xl p-1 md:p-3 rounded-sm overflow-hidden"
           style={{ backgroundColor: '#ffffff' }}
         >
-          {/* Watermark and Layout content remains same for consistency */}
+          {/* Watermark */}
           <div className="absolute inset-0 pointer-events-none select-none flex flex-wrap gap-12 rotate-[-25deg] scale-125 z-0 opacity-5">
              {Array(30).fill("NAIJA CYBER HUB").map((t, i) => (
                <span key={i} className="text-[10px] font-black whitespace-nowrap tracking-widest text-slate-900">{t}</span>
              ))}
           </div>
+
           <div className="border-[12px] border-slate-50 h-full relative z-10">
             <div className="border-[1px] border-slate-200 h-full p-8 md:p-12 text-center flex flex-col items-center justify-between relative bg-white">
               <div className="w-full flex justify-between items-start">
@@ -139,17 +136,23 @@ function CertificateContent() {
                   <div className="text-[7px] font-bold uppercase tracking-[0.2em] text-slate-400 leading-tight">Authentic Digital<br/>Credential</div>
                 </div>
               </div>
+
               <div className="flex-1 flex flex-col justify-center py-4">
                 <h3 className="text-blue-600 font-black uppercase tracking-[0.5em] text-[9px] mb-6" style={{color: '#2563eb'}}>Credential of Professional Readiness</h3>
                 <h1 className={`${display.className} text-4xl md:text-5xl text-slate-900 mb-8 uppercase leading-none`}>
                   Certificate <span className="font-serif italic text-2xl lowercase font-light opacity-40 px-1">of</span> Completion
                 </h1>
                 <p className="text-slate-400 font-medium italic text-xs mb-3 uppercase tracking-widest">This document certifies that</p>
-                <h2 className="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tighter">{userName}</h2>
+                <h2 className="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tighter">
+                    {userName}
+                </h2>
                 <p className="text-slate-600 max-w-xl mx-auto leading-relaxed text-xs md:text-sm font-medium mt-6">
-                  Has successfully completed the advanced simulation for modern cyber threat mitigation, demonstrating mastery in <span className="text-blue-600 font-bold" style={{color: '#2563eb'}}>SIM-Swap Fraud Defense</span> and <span className="text-blue-600 font-bold" style={{color: '#2563eb'}}>Social Engineering Resistance</span>.
+                  Has successfully completed the advanced simulation for modern cyber threat mitigation, 
+                  demonstrating mastery in <span className="text-blue-600 font-bold" style={{color: '#2563eb'}}>SIM-Swap Fraud Defense</span> and 
+                  <span className="text-blue-600 font-bold" style={{color: '#2563eb'}}> Social Engineering Resistance</span>.
                 </p>
               </div>
+
               <div className="grid grid-cols-3 w-full gap-6 pt-8 border-t border-slate-100 items-end">
                 <div className="flex flex-col items-center">
                   <p className={`${handwriting.className} text-3xl text-slate-800 h-8`}>Naija Cyber Hub</p>
@@ -173,14 +176,20 @@ function CertificateContent() {
         </div>
       </div>
 
-      {/* SHARE CONTROLS */}
       <div className="mt-10 w-full max-w-2xl flex flex-col gap-6">
         <div className="flex gap-4">
-          <button onClick={handleDownloadPDF} disabled={isDownloading} className="flex-1 px-6 py-4 bg-blue-600 text-white rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-slate-900 transition-all flex items-center justify-center gap-2 disabled:opacity-50">
+          <button 
+            onClick={handleDownloadPDF} 
+            disabled={isDownloading}
+            className="flex-1 px-6 py-4 bg-blue-600 text-white rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-slate-900 transition-all shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
+          >
             {isDownloading ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />}
             {isDownloading ? 'Generating PDF...' : 'Download PDF Certificate'}
           </button>
-          <button onClick={copyVerifyLink} className={`flex-1 px-6 py-4 rounded-xl font-black uppercase tracking-widest text-[10px] transition-all border-2 flex items-center justify-center gap-2 ${copied ? 'bg-green-500 border-green-500 text-white' : 'bg-white border-slate-800 text-slate-800'}`}>
+          <button 
+            onClick={copyVerifyLink}
+            className={`flex-1 px-6 py-4 rounded-xl font-black uppercase tracking-widest text-[10px] transition-all border-2 flex items-center justify-center gap-2 ${copied ? 'bg-green-500 border-green-500 text-white' : 'bg-white border-slate-800 text-slate-800 hover:bg-slate-50'}`}
+          >
             {copied ? <Check size={16} /> : <Copy size={16} />}
             {copied ? 'Link Copied' : 'Copy Verify Link'}
           </button>
@@ -191,11 +200,9 @@ function CertificateContent() {
              <Share2 size={16} className="text-blue-400" />
              <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Share Credential:</p>
           </div>
-          <div className="flex gap-4">
-            <SocialBtn type="whatsapp" onClick={() => handleShare('whatsapp')} />
-            <SocialBtn type="facebook" onClick={() => handleShare('facebook')} />
-            <SocialBtn type="twitter" onClick={() => handleShare('twitter')} />
-            <SocialBtn type="linkedin" onClick={() => handleShare('linkedin')} />
+          <div className="flex gap-3">
+            <button onClick={() => handleShare('whatsapp')} className="w-8 h-8 rounded-full flex items-center justify-center bg-blue-600 transition-transform hover:scale-125"><Share2 size={14} className="text-white" /></button>
+            <button onClick={() => handleShare('linkedin')} className="w-8 h-8 rounded-full flex items-center justify-center bg-blue-600 transition-transform hover:scale-125"><Share2 size={14} className="text-white" /></button>
           </div>
         </div>
 
@@ -207,42 +214,9 @@ function CertificateContent() {
   )
 }
 
-function SocialBtn({ type, onClick }: { type: 'whatsapp' | 'facebook' | 'twitter' | 'linkedin', onClick: () => void }) {
-  const configs = {
-    whatsapp: { 
-      color: '#25D366', 
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.438 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.631 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-        </svg>
-      )
-    },
-    facebook: { color: '#1877F2', icon: <Facebook size={20} fill="white" /> },
-    twitter: { 
-      color: '#000000', 
-      icon: (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-        </svg>
-      ) 
-    },
-    linkedin: { color: '#0077B5', icon: <Linkedin size={20} fill="white" /> }
-  }
-
-  return (
-    <button 
-      onClick={onClick} 
-      className="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95 text-white shadow-lg" 
-      style={{ backgroundColor: configs[type].color }}
-    >
-       {configs[type].icon}
-    </button>
-  );
-}
-
 export default function CompletionCertificate() {
   return (
-    <Suspense fallback={<div>Loading Credentials...</div>}>
+    <Suspense fallback={<div>Loading...</div>}>
       <CertificateContent />
     </Suspense>
   )

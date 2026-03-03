@@ -1,12 +1,26 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { 
+  Search, 
+  PhoneCall, 
+  ShieldAlert, 
+  ChevronLeft, 
+  Clock, 
+  Fingerprint, 
+  Building2,
+  Zap
+} from 'lucide-react'
 
 export default function EmergencyPage() {
   const router = useRouter();
   const [search, setSearch] = useState("");
+  const [mounted, setMounted] = useState(false);
 
-  // Alphabetical List of Nigerian Commercial Banks with Emergency Codes
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const bankCodes = [
     { name: "Access Bank", code: "*901*911#", color: "bg-orange-600" },
     { name: "Alternative Bank", code: "*911#", color: "bg-slate-800" },
@@ -44,81 +58,102 @@ export default function EmergencyPage() {
     bank.name.toLowerCase().includes(search.toLowerCase())
   );
 
+  if (!mounted) return null;
+
   return (
-    <main className="min-h-screen bg-red-50 p-6">
+    <main className="min-h-screen bg-red-50 p-6 pt-32">
       <div className="max-w-5xl mx-auto">
         
         <button 
           onClick={() => router.push('/')}
-          className="text-red-700 font-black mb-8 flex items-center gap-2 hover:underline tracking-tight"
+          className="text-red-700 font-black mb-8 flex items-center gap-2 hover:translate-x-[-4px] transition-transform uppercase text-xs tracking-widest"
         >
-          ← EXIT EMERGENCY HUB
+          <ChevronLeft size={16} strokeWidth={3} /> Exit Emergency Hub
         </button>
 
-        <header className="mb-10 text-center">
-          <div className="inline-block bg-red-600 text-white px-6 py-1.5 rounded-full text-xs font-black uppercase tracking-[0.2em] mb-4 shadow-lg animate-pulse">
-            Active Security Response
+        <header className="mb-12 text-center">
+          <div className="inline-flex items-center gap-2 bg-red-600 text-white px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-6 shadow-xl animate-pulse">
+            <ShieldAlert size={14} /> Active Security Response
           </div>
-          <h1 className="text-4xl md:text-7xl font-black text-slate-900 mb-4 uppercase tracking-tighter leading-none">
-            BLOCK YOUR ACCOUNT
+          <h1 className="text-5xl md:text-8xl font-black text-slate-900 mb-6 uppercase tracking-tighter leading-[0.85]">
+            Freeze Your <span className="text-red-600">Account.</span>
           </h1>
-          <p className="text-lg md:text-xl text-slate-600 font-bold max-w-2xl mx-auto">
-            Search for your bank below. Dial the code <span className="text-red-600 underline underline-offset-4">NOW</span> to freeze your money before scammers move it.
+          <p className="text-lg md:text-xl text-slate-600 font-bold max-w-2xl mx-auto leading-relaxed">
+            Scammers move money in seconds. Find your bank and dial the code <span className="text-red-600 underline decoration-4 underline-offset-4">IMMEDIATELY</span>.
           </p>
         </header>
 
         {/* SEARCH BOX */}
-        <div className="mb-10 sticky top-4 z-30">
-          <input 
-            type="text" 
-            placeholder="Type your bank name (e.g. UBA, Lotus, Jaiz)..."
-            className="w-full p-6 md:p-8 rounded-[2.5rem] border-4 border-red-100 focus:border-red-600 outline-none text-xl font-bold shadow-2xl transition-all"
-            onChange={(e) => setSearch(e.target.value)}
-          />
+        <div className="mb-12 sticky top-28 z-30">
+          <div className="relative group">
+            <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-red-600 transition-colors" size={24} />
+            <input 
+              type="text" 
+              placeholder="Search your bank (e.g. UBA, Zenith)..."
+              className="w-full p-6 md:p-8 pl-16 md:pl-20 rounded-[2.5rem] border-4 border-white shadow-2xl focus:border-red-600 outline-none text-xl font-bold transition-all placeholder:text-slate-300"
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
         </div>
 
         {/* ALPHABETICAL CODES GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredBanks.map((bank, index) => (
-            <div 
+            <a 
               key={index} 
-              className={`${bank.color} text-white p-6 rounded-[2rem] shadow-md flex flex-col justify-between group hover:scale-[1.03] transition-transform duration-300 border border-white/10`}
+              href={`tel:${bank.code.replace(/#/g, '%23')}`}
+              className={`${bank.color} text-white p-8 rounded-[2.5rem] shadow-lg flex flex-col justify-between group hover:scale-[1.05] transition-all duration-300 border-4 border-transparent hover:border-white relative overflow-hidden active:scale-95`}
             >
-              <div className="mb-6">
-                <p className="text-[10px] font-black uppercase opacity-60 tracking-widest mb-1">Bank Name</p>
-                <h2 className="text-xl font-black tracking-tight leading-tight">{bank.name}</h2>
+              <div className="relative z-10">
+                <p className="text-[10px] font-black uppercase opacity-60 tracking-widest mb-2 flex items-center gap-2">
+                  <Building2 size={12} /> Commercial Bank
+                </p>
+                <h2 className="text-2xl font-black tracking-tight leading-tight mb-8">{bank.name}</h2>
               </div>
-              <div className="bg-black/20 p-4 rounded-2xl border border-white/10 text-center">
-                <p className="text-[10px] font-black uppercase opacity-60 mb-1">Dial This Code</p>
-                <p className="text-2xl font-black font-mono tracking-tighter group-hover:tracking-widest transition-all">
+              
+              <div className="bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-white/20 text-center relative z-10">
+                <p className="text-[10px] font-black uppercase opacity-80 mb-2 flex justify-center items-center gap-2">
+                   TAP TO DIAL <PhoneCall size={10} />
+                </p>
+                <p className="text-3xl font-black font-mono tracking-tighter">
                   {bank.code}
                 </p>
               </div>
-            </div>
+
+              {/* Decorative Icon in background */}
+              <Zap size={100} className="absolute -bottom-4 -right-4 opacity-10 rotate-12 group-hover:scale-110 transition-transform" />
+            </a>
           ))}
         </div>
 
-        {/* DRILL INSTRUCTIONS */}
-        <div className="mt-16 bg-slate-900 text-white p-10 md:p-16 rounded-[4rem] shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none">
-            <svg width="200" height="200" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
-          </div>
-          <h3 className="text-2xl md:text-3xl font-black text-red-500 mb-8 uppercase tracking-tighter">Immediate Recovery Protocol:</h3>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="space-y-2">
-              <span className="text-4xl">🏃</span>
-              <p className="font-bold text-lg">Act Fast</p>
-              <p className="text-sm opacity-70">Scammers move money in minutes. Dial the code from any nearby phone immediately.</p>
+        {/* PROTOCOL INSTRUCTIONS */}
+        <div className="mt-20 bg-slate-900 text-white p-10 md:p-16 rounded-[4rem] shadow-2xl relative overflow-hidden border border-slate-800">
+          <h3 className="text-2xl md:text-4xl font-black text-red-500 mb-12 uppercase tracking-tighter flex items-center gap-3">
+             Recovery Protocol
+          </h3>
+          <div className="grid md:grid-cols-3 gap-12 relative z-10">
+            <div className="space-y-4">
+              <div className="w-12 h-12 bg-red-600/20 text-red-500 rounded-2xl flex items-center justify-center">
+                <Clock size={24} strokeWidth={2.5} />
+              </div>
+              <p className="font-black text-xl uppercase tracking-tight">Act Within 5 Mins</p>
+              <p className="text-sm opacity-60 font-medium leading-relaxed">The "Golden Window" for recovery is 5 minutes. Every second counts before the funds are dispersed.</p>
             </div>
-            <div className="space-y-2">
-              <span className="text-4xl">🆔</span>
-              <p className="font-bold text-lg">Verify ID</p>
-              <p className="text-sm opacity-70">After dialing, the prompt will ask for your linked phone number to confirm your identity.</p>
+            
+            <div className="space-y-4">
+              <div className="w-12 h-12 bg-blue-600/20 text-blue-500 rounded-2xl flex items-center justify-center">
+                <Fingerprint size={24} strokeWidth={2.5} />
+              </div>
+              <p className="font-black text-xl uppercase tracking-tight">Verify Identity</p>
+              <p className="text-sm opacity-60 font-medium leading-relaxed">The USSD prompt will ask for your linked phone number or NIN. Have these details ready in your mind.</p>
             </div>
-            <div className="space-y-2">
-              <span className="text-4xl">🏦</span>
-              <p className="font-bold text-lg">Visit Bank</p>
-              <p className="text-sm opacity-70">Once blocked, go to your bank branch with your ID card to reactivate your account.</p>
+
+            <div className="space-y-4">
+              <div className="w-12 h-12 bg-green-600/20 text-green-500 rounded-2xl flex items-center justify-center">
+                <Building2 size={24} strokeWidth={2.5} />
+              </div>
+              <p className="font-black text-xl uppercase tracking-tight">Visit Branch</p>
+              <p className="text-sm opacity-60 font-medium leading-relaxed">Once the block is successful, visit your nearest branch with a valid ID card to begin fund recovery.</p>
             </div>
           </div>
         </div>

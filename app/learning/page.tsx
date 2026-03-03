@@ -2,6 +2,16 @@
 import React, { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams, useRouter } from 'next/navigation'
+import { 
+  ShieldCheck, 
+  Lock, 
+  ChevronLeft, 
+  UserPlus, 
+  Play, 
+  CheckCircle2,
+  Trophy,
+  LayoutDashboard
+} from 'lucide-react'
 import ModuleCard from '@/app/components/ModuleCard' 
 
 function LearningLabContent() {
@@ -15,11 +25,9 @@ function LearningLabContent() {
 
   // Handle Session Logic
   useEffect(() => {
-    // If URL has ?new=true, clear everything for a fresh start
     if (isNewSession === 'true') {
       localStorage.removeItem('completedModules');
       setCompletedModules([]);
-      // Clean the URL so it doesn't keep resetting on every refresh
       router.replace('/learning');
       return;
     }
@@ -49,29 +57,29 @@ function LearningLabContent() {
       path: "/learning/sim-armor"
     },
     {
-      id: "bank-alerts",
+      id: "social-eng", // SYNCED: Matches app/learning/social-eng/page.tsx
       module: "Module 2",
-      title: "Spotting Fake Bank Alerts",
-      pidginTitle: "Verify the Alert: No fall Mugu",
-      description: "A practical guide on checking your balance vs. trusting SMS alerts, and how to identify fraudulent notifications.",
-      youtubeId: "vfgxmJj0Stc", 
-      path: "/learning/bank-alert"
-    },
-    {
-      id: "social-eng",
-      module: "Module 3",
       title: "Social Engineering Defense",
       pidginTitle: "Caution: No give out your PIN",
-      description: "Learn why 'Caution' is your best defense against 'Customer Care' scammers asking for your OTP or BVN.",
+      description: "Learn how to spot the psychological tricks hackers use to steal your OTP or BVN before they steal your funds.",
       youtubeId: "qnUNRdbtKjU", 
-      path: "/learning/bvn-scam"
+      path: "/learning/social-eng" 
+    },
+    {
+      id: "bank-alerts", // SYNCED: This expects app/learning/bank-alerts/page.tsx
+      module: "Module 3",
+      title: "Spotting Fake Bank Alerts",
+      pidginTitle: "Verify the Alert: No fall Mugu",
+      description: "A practical guide on checking your balance vs. trusting SMS alerts, and identifying fraudulent notifications.",
+      youtubeId: "vfgxmJj0Stc", 
+      path: "/learning/bank-alerts"
     },
     {
       id: "mistaken-transfer",
       module: "Module 4",
       title: "The 'Mistaken' Transfer Trap",
       pidginTitle: "Mistake Credit: No send am back!",
-      description: "Real stories of ₦1.5 Billion mistaken credits. Learn the legal and security rules for returning 'wrong' money safely.",
+      description: "Real stories of ₦1.5 Billion mistaken credits. Learn the legal rules for returning 'wrong' money safely.",
       youtubeId: "6HhWC8rB7Fw", 
       path: "/learning/mistaken-transfer"
     },
@@ -89,7 +97,7 @@ function LearningLabContent() {
       module: "Module 6",
       title: "Public WiFi & USB Safety",
       pidginTitle: "Free WiFi: The Silent Thief",
-      description: "Watch how 'Juice Jacking' and public WiFi allow hackers to see your bank app. Protect your data in public spaces.",
+      description: "Watch how 'Juice Jacking' and public WiFi allow hackers to see your bank app. Protect your data in public.",
       youtubeId: "dNiYae0iZ-U", 
       path: "/learning/public-safety"
     }
@@ -99,24 +107,24 @@ function LearningLabContent() {
   const progressPercentage = (completedModules.length / stories.length) * 100;
 
   return (
-    <main className="min-h-screen bg-slate-50 p-6 relative">
+    <main className="min-h-screen bg-slate-50 p-6 md:p-12 relative">
       {referralSource && (
-        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[60] bg-blue-600 text-white px-6 py-3 rounded-full shadow-2xl font-bold text-xs uppercase tracking-widest animate-bounce">
-          Welcome {referralSource} Community member! 🛡️
+        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[60] bg-blue-600 text-white px-6 py-3 rounded-full shadow-2xl font-black text-[10px] uppercase tracking-widest animate-bounce flex items-center gap-2">
+          <ShieldCheck size={14} /> Welcome {referralSource} Community!
         </div>
       )}
 
       {/* VIDEO MODAL */}
       {activeVideo && (
-        <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 bg-slate-900/95 flex items-center justify-center p-4 backdrop-blur-md">
           <div className="w-full max-w-4xl relative">
             <button 
               onClick={() => setActiveVideo(null)}
-              className="absolute -top-14 right-0 text-white font-black text-sm uppercase tracking-widest bg-white/10 px-4 py-2 rounded-full hover:bg-white/20 transition-all"
+              className="absolute -top-14 right-0 text-white font-black text-[10px] uppercase tracking-widest bg-white/10 px-6 py-3 rounded-full hover:bg-red-600 transition-all border border-white/20"
             >
-              ✕ Close Lesson
+              ✕ Close Briefing
             </button>
-            <div className="aspect-video rounded-[2rem] overflow-hidden bg-black shadow-2xl border border-white/10">
+            <div className="aspect-video rounded-[2.5rem] overflow-hidden bg-black shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10">
               <iframe
                 className="w-full h-full"
                 src={`https://www.youtube.com/embed/${activeVideo}?autoplay=1&rel=0`}
@@ -129,50 +137,68 @@ function LearningLabContent() {
       )}
 
       <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-            <Link href="/" className="group text-blue-600 font-black inline-flex items-center gap-2 hover:translate-x-1 transition-transform uppercase text-xs tracking-widest">
-            ← Back house
+        {/* TOP NAV */}
+        <div className="flex justify-between items-center mb-12">
+            <Link href="/" className="group text-slate-400 font-black inline-flex items-center gap-2 hover:text-blue-600 transition-colors uppercase text-[10px] tracking-widest">
+              <ChevronLeft size={14} strokeWidth={3} className="group-hover:-translate-x-1 transition-transform" /> 
+              Back to Base
             </Link>
             
-            {/* NEW LEARNER BUTTON */}
             <button 
                 onClick={resetProgress}
-                className="bg-white border-2 border-slate-200 text-slate-400 hover:text-blue-600 hover:border-blue-600 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-sm flex items-center gap-2"
+                className="bg-white border border-slate-200 text-slate-500 hover:text-blue-600 hover:border-blue-600 px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-sm flex items-center gap-2"
             >
-                <span>👤</span> New Learner Session
+                <UserPlus size={14} /> New Session
             </button>
         </div>
 
-        <header className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        {/* HERO SECTION */}
+        <header className="mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-10">
           <div className="flex-1">
-            <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-3 uppercase tracking-tighter leading-none">Learning Lab</h1>
-            <p className="text-xl text-slate-500 max-w-2xl font-medium mb-4">
-              Watch these <span className="text-blue-600 font-bold italic">6 Modules</span> to build your Cyber-Resilience.
+            <div className="flex items-center gap-3 mb-4">
+               <div className="w-2 h-2 rounded-full bg-blue-600 animate-ping" />
+               <span className="text-blue-600 font-black uppercase text-[10px] tracking-[0.3em]">Operational Lab</span>
+            </div>
+            <h1 className="text-5xl md:text-7xl font-black text-slate-900 mb-6 uppercase tracking-tighter leading-[0.85]">
+              Learning <br/><span className="text-blue-600">Defense</span>
+            </h1>
+            <p className="text-xl text-slate-500 max-w-xl font-medium mb-8">
+              Watch the briefings, then <span className="text-slate-900 font-bold">enter the module</span> to verify your defense protocols.
             </p>
             
-            {/* PROGRESS BAR */}
-            <div className="max-w-md bg-slate-200 h-3 rounded-full overflow-hidden">
-              <div 
-                className="bg-blue-600 h-full transition-all duration-1000 ease-out"
-                style={{ width: `${progressPercentage}%` }}
-              />
+            {/* PROGRESS TRACKER */}
+            <div className="max-w-md">
+              <div className="flex justify-between items-end mb-3">
+                <p className="text-[10px] font-black text-slate-900 uppercase tracking-widest">
+                  System Hardening: {Math.round(progressPercentage)}%
+                </p>
+                <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest">
+                  {completedModules.length} / {stories.length} Fixed
+                </p>
+              </div>
+              <div className="bg-slate-200 h-4 rounded-full overflow-hidden p-1">
+                <div 
+                  className="bg-blue-600 h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_15px_rgba(37,99,235,0.4)]"
+                  style={{ width: `${progressPercentage}%` }}
+                />
+              </div>
             </div>
-            <p className="text-[10px] font-black text-slate-400 mt-2 uppercase tracking-widest">
-              Progress: {completedModules.length} / {stories.length} Modules Completed
-            </p>
           </div>
           
-          {allModulesCompleted ? (
-            <Link href="/learning/assessment" className="bg-blue-600 text-white px-8 py-4 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-blue-700 transition-all shadow-lg active:scale-95 text-center">
-              Take Final Assessment →
-            </Link>
-          ) : (
-            <div className="bg-slate-200 text-slate-400 px-8 py-4 rounded-2xl font-black uppercase text-xs tracking-widest cursor-not-allowed text-center border-2 border-slate-300">
-              Locked: Finish All Modules 🔒
-            </div>
-          )}
+          <div className="lg:mb-2">
+            {allModulesCompleted ? (
+              <Link href="/learning/assessment" className="group bg-blue-600 text-white px-10 py-6 rounded-[2rem] font-black uppercase text-xs tracking-[0.2em] hover:bg-slate-900 transition-all shadow-[0_20px_40px_rgba(37,99,235,0.3)] active:scale-95 flex items-center gap-3">
+                Final Assessment <Trophy size={18} className="group-hover:rotate-12 transition-transform" />
+              </Link>
+            ) : (
+              <div className="bg-slate-100 text-slate-400 px-10 py-6 rounded-[2rem] font-black uppercase text-xs tracking-[0.2em] border-2 border-dashed border-slate-200 flex items-center gap-3">
+                Certification Locked <Lock size={16} />
+              </div>
+            )}
+          </div>
         </header>
 
+        {/* MODULE GRID */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {stories.map((story) => (
             <ModuleCard 
@@ -184,30 +210,34 @@ function LearningLabContent() {
           ))}
         </div>
 
-        <div className="mt-16 bg-slate-900 rounded-[3rem] p-8 md:p-16 text-center text-white">
-          <h2 className="text-3xl font-black uppercase tracking-tighter mb-4">Ready to become a Commander?</h2>
-          <p className="text-slate-400 mb-8 max-w-md mx-auto">
-            {allModulesCompleted 
-              ? "You have completed all modules! You are now eligible to take the certification exam."
-              : "Finish all 6 modules above to unlock the final exam and receive your official certificate."
-            }
-          </p>
-          
-          {allModulesCompleted ? (
-            <Link href="/learning/assessment" className="inline-block bg-blue-600 text-white px-12 py-5 rounded-2xl font-black uppercase text-sm tracking-widest hover:bg-blue-700 transition-all shadow-xl active:scale-95">
-              Start the Certification Quiz
-            </Link>
-          ) : (
-            <button disabled className="inline-block bg-slate-800 text-slate-500 px-12 py-5 rounded-2xl font-black uppercase text-sm tracking-widest cursor-not-allowed opacity-50 border border-slate-700">
-              Assessment Locked 🔒
-            </button>
-          )}
+        {/* BOTTOM CTA */}
+        <div className="mt-20 bg-slate-900 rounded-[4rem] p-10 md:p-20 text-center text-white relative overflow-hidden">
+          <div className="relative z-10">
+            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6">Master the Shield</h2>
+            <p className="text-slate-400 mb-10 max-w-md mx-auto font-medium text-lg">
+              {allModulesCompleted 
+                ? "Excellent work. Your neural firewall is synchronized. Proceed to the certification exam to claim your rank."
+                : "Complete all 6 security briefings to unlock your Commander Credentials and final badge."
+              }
+            </p>
+            
+            {allModulesCompleted ? (
+              <Link href="/learning/assessment" className="inline-flex bg-blue-600 text-white px-12 py-6 rounded-3xl font-black uppercase text-xs tracking-[0.2em] hover:bg-white hover:text-blue-600 transition-all shadow-xl active:scale-95 items-center gap-3">
+                Begin Exam <CheckCircle2 size={18} />
+              </Link>
+            ) : (
+              <div className="inline-flex bg-slate-800 text-slate-500 px-12 py-6 rounded-3xl font-black uppercase text-xs tracking-[0.2em] border border-slate-700 opacity-50 cursor-not-allowed items-center gap-3">
+                Exam Encrypted <Lock size={18} />
+              </div>
+            )}
+          </div>
+          <LayoutDashboard size={400} className="absolute -bottom-20 -right-20 text-white/5 -rotate-12 pointer-events-none" />
         </div>
       </div>
 
-      <footer className="mt-20 py-10 text-center border-t border-slate-100">
-          <p className="text-[10px] text-slate-300 font-black uppercase tracking-[0.4em]">
-            Knowledge is your strongest shield
+      <footer className="mt-24 py-10 text-center border-t border-slate-100">
+          <p className="text-[10px] text-slate-300 font-black uppercase tracking-[0.5em]">
+            Naija Cyber-Hub // Knowledge is the Primary Shield
           </p>
       </footer>
     </main>
@@ -216,7 +246,12 @@ function LearningLabContent() {
 
 export default function LearningLab() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-slate-50 flex items-center justify-center font-black text-slate-400 uppercase tracking-widest">Loading Lab...</div>}>
+    <Suspense fallback={
+      <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center gap-4">
+        <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+        <p className="font-black text-slate-400 uppercase text-[10px] tracking-[0.4em]">Booting Learning Lab...</p>
+      </div>
+    }>
       <LearningLabContent />
     </Suspense>
   )

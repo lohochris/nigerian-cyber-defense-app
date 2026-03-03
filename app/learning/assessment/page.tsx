@@ -2,6 +2,20 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { 
+  ShieldAlert, 
+  Lock, 
+  ShieldCheck, 
+  Trophy, 
+  RotateCcw, 
+  ChevronRight, 
+  User, 
+  Award,
+  AlertOctagon,
+  Fingerprint,
+  Zap,
+  Activity
+} from 'lucide-react'
 
 export default function FinalAssessment() {
   const router = useRouter();
@@ -11,54 +25,101 @@ export default function FinalAssessment() {
   const [showResults, setShowResults] = useState(false);
   const [userName, setUserName] = useState("");
 
-  // SECURITY GATE: Check if all 6 modules are completed in localStorage
   useEffect(() => {
     const checkProgress = () => {
       const savedProgress = localStorage.getItem('completedModules');
       const progress = savedProgress ? JSON.parse(savedProgress) : [];
-      
-      // We need exactly 6 unique IDs to pass
       if (progress.length < 6) {
         setIsAuthorized(false);
-        // Give them a moment to read the "Access Denied" before kicking them out
         const timer = setTimeout(() => router.push('/learning'), 4000);
         return () => clearTimeout(timer);
       } else {
         setIsAuthorized(true);
       }
     };
-
     checkProgress();
   }, [router]);
 
   const questions = [
     {
-      question: "A 'Bank Staff' calls you saying your BVN is blocked. They ask for the OTP sent to your phone to 'unblock' it. What do you do?",
-      options: ["Give them the OTP quickly", "Hang up and call your bank's official number", "Ask them for their staff ID first", "Post the OTP on Twitter"],
+      question: "A 'Bank Staff' calls asking for an OTP to unblock your BVN. What is your immediate action?",
+      options: ["Give them the OTP", "Hang up and call official line", "Ask for their Staff ID", "Wait for them to call back"],
       correct: 1
     },
     {
-      question: "You receive a ₦50,000 credit alert via SMS, but your bank app balance hasn't changed. The sender calls begging for a refund. What is this?",
-      options: ["A miracle", "A mistaken transfer", "A fake alert scam", "A banking error"],
+      question: "You get a ₦50k SMS alert, but your App balance is unchanged. The sender begs for a refund. This is:",
+      options: ["A Banking Error", "A Mistaken Transfer", "A Fake Alert Scam", "A Network Delay"],
       correct: 2
     },
     {
-      question: "What is the most secure way to protect your SIM card from being used for unauthorized bank transfers?",
-      options: ["Hide the phone", "Set a 4-digit SIM PIN", "Delete all bank apps", "Use a strong phone lock screen"],
+      question: "What is the primary defense for your SIM card against unauthorized bank transfers?",
+      options: ["Strong Phone Password", "A 4-digit SIM PIN", "Deleting Bank Apps", "Turning off Data"],
       correct: 1
     },
     {
-      question: "You get a voice note from your 'brother' crying for money due to an emergency, but the voice sounds slightly robotic. What should you do?",
-      options: ["Send money immediately", "Call him back and ask for the 'Family Password'", "Ignore him forever", "Report him to the police"],
+      question: "An AI-cloned voice of a relative begs for emergency money. How do you verify?",
+      options: ["Send 50% first", "Ask for a 'Family Password'", "Call the Police", "Ignore the call"],
       correct: 1
+    },
+    {
+      question: "A stranger offers you a 'Free USB Charger' at the airport. What is the risk?",
+      options: ["Fast Charging", "Juice Jacking (Data Theft)", "Battery Damage", "Slow Internet"],
+      correct: 1
+    },
+    {
+      question: "You see a public WiFi named 'Free_Airport_Secure'. Should you log into your bank app?",
+      options: ["Yes, if it has a padlock", "Only for 2 minutes", "Never on public WiFi", "Yes, with a VPN only"],
+      correct: 2
+    },
+    {
+      question: "Which of these is NOT a red flag for Social Engineering?",
+      options: ["Extreme Urgency", "Asking for OTP", "Professional Greeting", "Threats of account closure"],
+      correct: 2
+    },
+    {
+      question: "A buyer sends you a screenshot of a successful transfer but no alert has reached you. You should:",
+      options: ["Release the goods", "Ask for their ID card", "Wait for balance reflection", "Call your bank manager"],
+      correct: 2
+    },
+    {
+      question: "What does 'Double-Lock' protection mean in this course?",
+      options: ["Two Phone Passwords", "SIM PIN + App Biometrics", "Two Bank Accounts", "Physical Safe for Phone"],
+      correct: 1
+    },
+    {
+      question: "If you accidentally gave a scammer your OTP, what is the first thing to do?",
+      options: ["Change your ATM PIN", "Call Bank to 'Freeze' Account", "Wait for a debit alert", "Pray"],
+      correct: 1
+    },
+    {
+      question: "Why do scammers use 'SMS Broadcasters'?",
+      options: ["To send messages faster", "To spoof official Bank IDs", "To give free airtime", "To bypass 2FA"],
+      correct: 1
+    },
+    {
+      question: "Your 'Bank' sends an email with a link to 'Update your KYC'. The URL is 'secure-zenith-update.top'. Is it safe?",
+      options: ["Yes, it says secure", "No, the domain is fake", "Yes, KYC is mandatory", "Only if you use a PC"],
+      correct: 1
+    },
+    {
+      question: "What is the 'Golden Rule' of Nigerian Fintech security?",
+      options: ["Trust but Verify", "No OTP, No Entry", "Banks never ask for PIN/OTP", "Fast finger wins"],
+      correct: 2
+    },
+    {
+      question: "Someone 'mistakenly' sends ₦1M to you and wants it back in a different account. You should:",
+      options: ["Send it back immediately", "Spend the commission", "Contact your bank to reverse", "Withdraw the cash"],
+      correct: 2
+    },
+    {
+      question: "A 'Customer Care' agent on Twitter (X) asks for your phone number to help with a failed transaction. Risk level?",
+      options: ["Low - they need to call", "Zero - it's Twitter", "High - Phishing attempt", "Medium - check their bio"],
+      correct: 2
     }
   ];
 
   const handleAnswer = (index: number) => {
-    if (index === questions[currentQuestion].correct) {
-      setScore(prev => prev + 1);
-    }
-
+    if (index === questions[currentQuestion].correct) setScore(prev => prev + 1);
     if (currentQuestion + 1 < questions.length) {
       setCurrentQuestion(prev => prev + 1);
     } else {
@@ -70,124 +131,128 @@ export default function FinalAssessment() {
   if (isAuthorized === false) {
     return (
       <main className="min-h-screen bg-slate-900 flex items-center justify-center p-6 text-center">
-        <div className="max-w-md bg-white p-10 md:p-14 rounded-[3.5rem] shadow-2xl border-t-8 border-red-500">
-          <div className="text-7xl mb-6">🔒</div>
-          <h1 className="text-3xl font-black text-slate-900 uppercase mb-4 tracking-tighter">Clearance Required</h1>
+        <div className="max-w-md bg-white p-10 rounded-[3rem] shadow-2xl border-t-8 border-red-500">
+          <ShieldAlert size={80} className="mx-auto text-red-500 mb-6" />
+          <h1 className="text-3xl font-black text-slate-900 uppercase mb-4 tracking-tighter">Access Denied</h1>
           <p className="text-slate-500 font-medium mb-8 leading-relaxed">
-            You haven't finished all 6 Learning Modules. A <span className="text-red-600 font-bold">Cyber-Commander</span> must be fully trained before taking the final exam.
+            You haven't finished all 6 Modules. A <span className="text-red-600 font-bold">Commander</span> must be fully trained.
           </p>
           <div className="flex items-center justify-center gap-3 bg-slate-50 py-4 rounded-2xl border border-slate-100">
              <div className="w-2 h-2 bg-red-500 rounded-full animate-ping" />
-             <span className="text-slate-400 font-bold text-[10px] uppercase tracking-[0.2em]">Redirecting to Lab...</span>
+             <span className="text-slate-400 font-bold text-[10px] uppercase tracking-[0.2em]">Redirecting...</span>
           </div>
         </div>
       </main>
     );
   }
 
-  // 2. LOADING SCREEN
   if (isAuthorized === null) return (
     <main className="min-h-screen bg-slate-900 flex items-center justify-center">
-        <div className="text-blue-500 font-black text-xs uppercase tracking-[0.5em] animate-pulse">Verifying Credentials...</div>
+        <Activity className="text-blue-500 animate-spin mr-3" size={20} />
+        <div className="text-blue-500 font-black text-xs uppercase tracking-[0.5em]">Verifying...</div>
     </main>
   );
 
   // 3. RESULTS SCREEN
   if (showResults) {
-    const passed = score >= 3;
+    const passed = score >= 12; // 80% to pass
     return (
       <main className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
-        <div className="max-w-2xl w-full bg-white rounded-[4rem] p-10 md:p-20 shadow-2xl text-center border-8 border-white relative overflow-hidden">
-          <h2 className="text-[10px] font-black text-blue-600 uppercase tracking-[0.4em] mb-4">Assessment Results</h2>
-          <div className="text-8xl mb-8 transform hover:scale-110 transition-transform cursor-default">{passed ? "🎖️" : "📚"}</div>
-          <h1 className="text-4xl md:text-5xl font-black text-slate-900 uppercase mb-4 tracking-tighter leading-none">
-            {passed ? "Commander Verified" : "Module Retraining"}
+        <div className="max-w-xl w-full bg-white rounded-[3rem] p-8 md:p-12 shadow-2xl text-center border-4 border-white relative overflow-hidden">
+          <h2 className="text-[10px] font-black text-blue-600 uppercase tracking-[0.4em] mb-4">Final Report</h2>
+          {passed ? <Trophy size={80} className="mx-auto text-yellow-500 mb-6" /> : <ShieldAlert size={80} className="mx-auto text-slate-300 mb-6" />}
+          <h1 className="text-3xl md:text-4xl font-black text-slate-900 uppercase mb-4 tracking-tighter">
+            {passed ? "Certified Commander" : "Incomplete Training"}
           </h1>
-          <p className="text-slate-500 text-xl mb-12 font-medium">
-            Strategic Accuracy: <span className="text-slate-900 font-black">{Math.round((score/questions.length)*100)}%</span>
+          <p className="text-slate-500 text-lg mb-8 font-medium">
+            Defense Accuracy: <span className="text-slate-900 font-black">{Math.round((score/questions.length)*100)}%</span>
           </p>
 
           {passed ? (
-            <div className="space-y-6 relative z-10">
-              <input 
-                type="text" 
-                placeholder="Full Name for ID Card" 
-                className="w-full p-6 rounded-3xl border-4 border-slate-50 focus:border-blue-600 outline-none text-center font-black text-2xl uppercase tracking-tight transition-all placeholder:text-slate-200"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-              />
+            <div className="space-y-4">
+              <div className="relative">
+                <User className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300" size={20} />
+                <input 
+                  type="text" 
+                  placeholder="Your Full Name" 
+                  className="w-full pl-14 pr-6 py-5 rounded-2xl border-2 border-slate-100 focus:border-blue-600 outline-none font-bold uppercase"
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
+                />
+              </div>
               <Link 
                 href={`/learning/completion?name=${encodeURIComponent(userName || "Cyber Commander")}`}
-                className="block w-full py-6 bg-blue-600 text-white rounded-3xl font-black uppercase tracking-widest text-sm hover:bg-slate-900 transition-all shadow-2xl active:scale-95"
+                className="flex items-center justify-center gap-3 w-full py-5 bg-blue-600 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-slate-900 transition-all"
               >
-                Issue Certificate →
+                Claim Certificate <Award size={18} />
               </Link>
             </div>
           ) : (
             <button 
               onClick={() => window.location.reload()}
-              className="w-full py-6 bg-slate-900 text-white rounded-3xl font-black uppercase tracking-widest text-sm hover:bg-blue-600 transition-all shadow-xl"
+              className="flex items-center justify-center gap-3 w-full py-5 bg-slate-900 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-blue-600 transition-all"
             >
-              Re-take Assessment
+              Restart Simulation <RotateCcw size={18} />
             </button>
           )}
-
-          {/* BG DECOR */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-full blur-3xl -translate-y-10 translate-x-10" />
         </div>
       </main>
     );
   }
 
-  // 4. QUIZ SCREEN
+  // 4. QUIZ SCREEN (NO SCROLL OPTIMIZED)
   return (
-    <main className="min-h-screen bg-slate-900 flex items-center justify-center p-6">
-      <div className="max-w-3xl w-full">
-        <div className="flex justify-between items-center mb-8 text-white px-4">
-          <div className="text-[10px] font-black uppercase tracking-widest bg-white/5 px-6 py-3 rounded-full border border-white/10 backdrop-blur-md">
-            Phase <span className="text-blue-500">{currentQuestion + 1}</span> / {questions.length}
+    <main className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
+      <div className="max-w-4xl w-full flex flex-col h-[90vh] max-h-[700px]">
+        
+        {/* TOP STATUS BAR */}
+        <div className="flex justify-between items-center mb-4 text-white px-2">
+          <div className="text-[10px] font-black uppercase tracking-widest bg-white/5 px-4 py-2 rounded-full border border-white/10 flex items-center gap-2">
+            <Fingerprint size={12} className="text-blue-500" />
+            Stage {currentQuestion + 1} <span className="text-slate-500">/ {questions.length}</span>
           </div>
-          <div className="text-[10px] font-black uppercase tracking-widest text-blue-400 animate-pulse">
-             System Live • Security Final
+          <div className="text-[10px] font-black uppercase tracking-widest text-blue-400 flex items-center gap-2">
+             <Zap size={12} className="animate-pulse" /> Active Shielding
           </div>
         </div>
 
-        <div className="bg-white rounded-[4rem] p-10 md:p-20 shadow-2xl relative overflow-hidden border-b-[12px] border-blue-600/20">
+        {/* MAIN QUESTION CARD */}
+        <div className="bg-white rounded-[3rem] p-6 md:p-10 shadow-2xl relative overflow-hidden flex flex-col flex-1 border-b-[8px] border-blue-600/20">
             {/* PROGRESS BAR */}
-            <div className="absolute top-0 left-0 w-full h-3 bg-slate-100">
+            <div className="absolute top-0 left-0 w-full h-2 bg-slate-100">
                  <div 
-                    className="h-full bg-blue-600 transition-all duration-700 ease-out" 
+                    className="h-full bg-blue-600 transition-all duration-500" 
                     style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }} 
                  />
             </div>
             
-            <h2 className="text-3xl md:text-4xl font-black text-slate-900 leading-[1.1] mb-12 tracking-tight">
-                {questions[currentQuestion].question}
-            </h2>
+            <div className="flex-1 flex flex-col justify-center mb-6">
+                <AlertOctagon size={32} className="text-blue-600 mb-4" />
+                <h2 className="text-2xl md:text-3xl font-black text-slate-900 leading-[1.1] tracking-tight">
+                    {questions[currentQuestion].question}
+                </h2>
+            </div>
 
-            <div className="grid gap-4">
+            {/* ANSWER GRID: 2 COLUMNS ON DESKTOP TO PREVENT SCROLLING */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {questions[currentQuestion].options.map((option, index) => (
                     <button
                         key={index}
                         onClick={() => handleAnswer(index)}
-                        className="w-full p-8 text-left border-2 border-slate-50 rounded-[2rem] font-bold text-slate-700 hover:border-blue-600 hover:bg-blue-50/50 transition-all active:scale-[0.97] flex items-center gap-6 group relative overflow-hidden"
+                        className="w-full p-4 md:p-5 text-left border-2 border-slate-50 rounded-2xl font-bold text-slate-700 hover:border-blue-600 hover:bg-blue-50 transition-all active:scale-[0.98] flex items-center gap-4 group relative"
                     >
-                        <span className="w-10 h-10 rounded-2xl bg-slate-100 flex items-center justify-center text-xs font-black group-hover:bg-blue-600 group-hover:text-white transition-all">
+                        <span className="w-8 h-8 shrink-0 rounded-xl bg-slate-100 flex items-center justify-center text-[10px] font-black group-hover:bg-blue-600 group-hover:text-white transition-all">
                             {String.fromCharCode(65 + index)}
                         </span>
-                        <span className="text-lg md:text-xl tracking-tight leading-tight">{option}</span>
-                        
-                        {/* Hover effect detail */}
-                        <div className="absolute right-6 opacity-0 group-hover:opacity-100 transition-opacity text-blue-600 text-2xl font-black">
-                            →
-                        </div>
+                        <span className="text-sm md:text-base tracking-tight leading-tight">{option}</span>
+                        <ChevronRight size={16} className="absolute right-4 opacity-0 group-hover:opacity-100 text-blue-600 transition-all" />
                     </button>
                 ))}
             </div>
         </div>
         
-        <footer className="mt-12 text-center opacity-30">
-            <p className="text-white text-[10px] font-black uppercase tracking-[0.8em]">Military Grade Verification</p>
+        <footer className="mt-6 text-center opacity-20">
+            <p className="text-white text-[9px] font-black uppercase tracking-[0.6em]">Neural Defense Protocol v4.0</p>
         </footer>
       </div>
     </main>

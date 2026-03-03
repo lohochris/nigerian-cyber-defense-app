@@ -1,17 +1,32 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { 
+  Headset, 
+  Key, 
+  Timer, 
+  ChevronLeft, 
+  ShieldAlert, 
+  PhoneOff, 
+  UserX,
+  Lock,
+  ArrowRight,
+  ShieldCheck
+} from 'lucide-react'
 
 export default function SocialEngineeringModule() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  // CRITICAL: ID must match the one in app/learning/page.tsx
   const MODULE_ID = "social-eng";
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleComplete = () => {
     setIsSubmitting(true);
-    
     const savedProgress = localStorage.getItem('completedModules');
     const currentProgress = savedProgress ? JSON.parse(savedProgress) : [];
 
@@ -20,90 +35,131 @@ export default function SocialEngineeringModule() {
       localStorage.setItem('completedModules', JSON.stringify(currentProgress));
     }
 
-    // Security simulation delay
     setTimeout(() => {
       router.push('/learning');
-    }, 800);
+    }, 1200);
   };
 
   const tactics = [
     {
       title: "The 'Customer Care' Lie",
       pidgin: "No be every call be from Bank",
-      text: "Scammers go call you, talk like say dem be bank manager or customer care. Dem go say your account get 'Problem' or your 'BVN get issue'. This na just to make you fear so you go do wetin dem want.",
-      icon: "📞"
+      text: "Scammers will call you pretending to be bank managers or customer care. They claim your account has a 'Problem' or your 'BVN has an issue'. This is a scare tactic to gain control.",
+      icon: <Headset className="text-red-600" size={28} />,
+      bgColor: "bg-red-50"
     },
     {
       title: "The 'OTP' Trap",
       pidgin: "Your PIN and OTP na your life",
-      text: "No bank staff go ever ask you for your PIN, Password, or that 6-digit code (OTP) wey come enter your phone. If anybody ask for am, na thief! Dem wan enter your app pull your money.",
-      icon: "🔐"
+      text: "No bank staff will EVER ask for your PIN, Password, or that 6-digit OTP code sent to your phone. If anyone asks for it, they are a thief. Period.",
+      icon: <Key className="text-blue-600" size={28} />,
+      bgColor: "bg-blue-50"
     },
     {
       title: "The Urgency Trick",
       pidgin: "No let dem rush you (Gidi-gidi)",
-      text: "Dem go say 'Do am now now or we go block your account!' This na lie. Real banks no dey rush person for phone. If dem call you like that, just hang up the call immediately.",
-      icon: "⏳"
+      text: "They use 'Urgency' to stop you from thinking. 'Do it now or we block your account!' is a lie. Real banks don't rush you over the phone. Just hang up.",
+      icon: <Timer className="text-amber-600" size={28} />,
+      bgColor: "bg-amber-50"
     }
   ];
 
+  if (!mounted) return null;
+
   return (
-    <main className="min-h-screen bg-slate-50">
+    <main className="min-h-screen bg-slate-50 pb-20">
       {/* HEADER */}
-      <header className="bg-red-700 text-white p-10 md:p-20 rounded-b-[4rem] shadow-2xl relative overflow-hidden">
-         <div className="absolute top-0 right-0 opacity-10 text-[15rem] font-black pointer-events-none">🛡️</div>
+      <header className="bg-red-900 text-white pt-32 pb-16 px-6 rounded-b-[4rem] shadow-2xl relative overflow-hidden border-b-8 border-red-600">
         <div className="max-w-4xl mx-auto relative z-10">
-          <button onClick={() => router.back()} className="text-red-200 font-bold mb-6 hover:text-white transition-colors uppercase text-xs tracking-widest">
-            ← Cancel Lesson
+          <button 
+            onClick={() => router.back()} 
+            className="group flex items-center gap-2 text-red-300 font-black mb-8 hover:text-white transition-colors uppercase text-[10px] tracking-widest"
+          >
+            <ChevronLeft size={14} strokeWidth={3} className="group-hover:-translate-x-1 transition-transform" /> 
+            Abort Training
           </button>
-          <h1 className="text-4xl md:text-6xl font-black mb-4 leading-tight uppercase">MODULE 3: <br/><span className="text-yellow-400">HUMAN FIREWALL</span></h1>
-          <p className="text-xl opacity-90 font-medium max-w-2xl text-red-50">Master the art of 'Caution'. Don't let sweet-mouth scammers manipulate your emotions to steal your data.</p>
+
+          <div className="flex items-center gap-4 mb-4">
+            <span className="bg-white text-red-900 px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-tighter">
+              Module 03
+            </span>
+            <div className="h-[1px] w-12 bg-red-800" />
+            <span className="text-red-300 text-[10px] font-black uppercase tracking-widest">
+              Psychological Defense
+            </span>
+          </div>
+
+          <h1 className="text-5xl md:text-7xl font-black mb-6 leading-[0.9] uppercase tracking-tighter">
+            HUMAN <br/><span className="text-yellow-400">FIREWALL</span>
+          </h1>
+          <p className="text-lg md:text-xl text-red-100 font-bold max-w-2xl leading-relaxed">
+            Scammers don't just hack code; they hack humans. Master the art of 'Caution' and learn when to kill the conversation.
+          </p>
         </div>
+        
+        <UserX size={350} className="absolute -bottom-20 -right-20 text-white/5 rotate-12 pointer-events-none" />
       </header>
 
-      {/* CONTENT */}
-      <section className="max-w-4xl mx-auto py-12 px-6">
-        <div className="grid gap-8">
+      {/* CONTENT SECTION */}
+      <section className="max-w-4xl mx-auto -mt-10 px-6">
+        <div className="grid gap-6">
           {tactics.map((tactic, index) => (
-            <div key={index} className="group bg-white p-8 rounded-[2.5rem] border-l-8 border-red-600 shadow-sm flex gap-6 items-start hover:shadow-xl hover:bg-red-50/30 transition-all">
-              <div className="hidden md:flex bg-red-50 text-3xl p-5 rounded-2xl group-hover:bg-red-100 transition-colors">{tactic.icon}</div>
+            <div key={index} className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl flex flex-col md:flex-row gap-8 items-start group hover:border-red-500 transition-all duration-300">
+              <div className={`${tactic.bgColor} w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110`}>
+                {tactic.icon}
+              </div>
               <div>
-                <h2 className="text-2xl font-black text-slate-900 mb-1 uppercase tracking-tight">{tactic.title}</h2>
-                <p className="text-red-700 font-bold mb-4 italic">"{tactic.pidgin}"</p>
-                <p className="text-slate-600 leading-relaxed text-lg font-medium">{tactic.text}</p>
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">Tactic 0{index + 1}</span>
+                  <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight">{tactic.title}</h2>
+                </div>
+                <p className="text-red-600 font-black mb-4 text-sm uppercase tracking-tight bg-red-50 inline-block px-3 py-1 rounded-full">
+                   "{tactic.pidgin}"
+                </p>
+                <p className="text-slate-500 leading-relaxed text-lg font-medium">{tactic.text}</p>
               </div>
             </div>
           ))}
         </div>
 
-        {/* THE 'GOLDEN RULE' BOX */}
-        <div className="mt-12 bg-blue-900 text-white p-10 rounded-[3rem] shadow-xl border-t-8 border-blue-400 relative overflow-hidden">
-          <h3 className="text-2xl font-black mb-6 uppercase tracking-widest text-blue-400 text-center relative z-10">The One Golden Rule:</h3>
-          <div className="bg-white/10 p-8 rounded-3xl text-center border border-white/20 mb-10 relative z-10 backdrop-blur-sm">
-             <p className="text-2xl md:text-3xl font-black italic leading-tight">
-                "If anybody call you ask for OTP or PIN, just <span className="text-red-400 underline uppercase">HANG UP</span>. No talk too much."
-             </p>
+        {/* THE GOLDEN RULE BOX */}
+        <div className="mt-12 bg-blue-900 text-white p-10 md:p-14 rounded-[4rem] shadow-2xl relative overflow-hidden border-t-8 border-blue-400">
+          <div className="relative z-10">
+            <div className="flex items-center gap-3 mb-8 justify-center">
+              <ShieldAlert size={32} className="text-blue-400 animate-pulse" />
+              <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tighter text-blue-400">The Golden Rule</h3>
+            </div>
+            
+            <div className="bg-white/5 backdrop-blur-md p-8 md:p-12 rounded-[3rem] border border-white/10 text-center mb-12 group hover:bg-white/10 transition-colors">
+               <p className="text-2xl md:text-4xl font-black italic leading-tight text-white mb-4">
+                "If anybody calls you asking for an <span className="text-red-500 underline uppercase underline-offset-8">OTP</span> or <span className="text-red-500 underline uppercase underline-offset-8">PIN</span>, just hang up."
+               </p>
+               <p className="text-blue-300 font-bold uppercase tracking-widest text-sm">No long talk. No explanations.</p>
+            </div>
+
+            <button 
+              onClick={handleComplete}
+              disabled={isSubmitting}
+              className={`w-full py-6 rounded-3xl font-black uppercase tracking-[0.2em] text-sm transition-all flex items-center justify-center gap-3 ${
+                isSubmitting 
+                ? 'bg-slate-800 cursor-not-allowed text-slate-500 border border-slate-700' 
+                : 'bg-white text-blue-900 hover:bg-red-600 hover:text-white shadow-2xl active:scale-95'
+              }`}
+            >
+              {isSubmitting ? (
+                <>Hardening Mental Shields... <Lock size={16} className="animate-pulse" /></>
+              ) : (
+                <>I'm a Human Firewall <ArrowRight size={18} /></>
+              )}
+            </button>
           </div>
-
-          {/* MASTER BUTTON */}
-          <button 
-            onClick={handleComplete}
-            disabled={isSubmitting}
-            className={`w-full py-6 rounded-2xl font-black uppercase tracking-[0.2em] transition-all shadow-2xl relative z-10 ${
-              isSubmitting 
-              ? 'bg-blue-800 cursor-not-allowed text-white/50' 
-              : 'bg-white text-blue-900 hover:bg-red-500 hover:text-white active:scale-95'
-            }`}
-          >
-            {isSubmitting ? "Hardening Firewall..." : "I'm a Human Firewall - Complete"}
-          </button>
-
-          <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-red-500/10 rounded-full blur-3xl" />
+          
+          <PhoneOff size={300} className="absolute -bottom-20 -left-20 text-blue-400/5 -rotate-12 pointer-events-none" />
         </div>
       </section>
 
-      <footer className="py-20 text-center opacity-20 font-black uppercase tracking-[0.5em] text-[10px]">
-        Mental Defense Protocol: Activated
+      <footer className="mt-20 text-center text-slate-400 font-black uppercase tracking-[0.5em] text-[10px]">
+        Module 03 // Perception Protocol Verified
       </footer>
     </main>
   )
