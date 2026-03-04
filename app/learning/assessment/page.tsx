@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { 
   ShieldAlert, 
-  Lock, 
   ShieldCheck, 
   Trophy, 
   RotateCcw, 
@@ -25,12 +24,15 @@ export default function FinalAssessment() {
   const [showResults, setShowResults] = useState(false);
   const [userName, setUserName] = useState("");
 
+  // SECURITY CHECK: Ensure all 6 modules are done
   useEffect(() => {
     const checkProgress = () => {
       const savedProgress = localStorage.getItem('completedModules');
       const progress = savedProgress ? JSON.parse(savedProgress) : [];
+      
       if (progress.length < 6) {
         setIsAuthorized(false);
+        // Redirect after 4 seconds
         const timer = setTimeout(() => router.push('/learning'), 4000);
         return () => clearTimeout(timer);
       } else {
@@ -120,6 +122,7 @@ export default function FinalAssessment() {
 
   const handleAnswer = (index: number) => {
     if (index === questions[currentQuestion].correct) setScore(prev => prev + 1);
+    
     if (currentQuestion + 1 < questions.length) {
       setCurrentQuestion(prev => prev + 1);
     } else {
@@ -127,42 +130,43 @@ export default function FinalAssessment() {
     }
   };
 
-  // 1. ACCESS DENIED SCREEN
+  // 1. LOADING STATE
+  if (isAuthorized === null) return (
+    <main className="min-h-screen bg-slate-900 flex flex-col items-center justify-center">
+        <Activity className="text-blue-500 animate-spin mb-4" size={40} />
+        <div className="text-blue-500 font-black text-[10px] uppercase tracking-[0.5em]">Verifying Security Clearances...</div>
+    </main>
+  );
+
+  // 2. ACCESS DENIED SCREEN
   if (isAuthorized === false) {
     return (
-      <main className="min-h-screen bg-slate-900 flex items-center justify-center p-6 text-center">
+      <main className="min-h-screen bg-slate-950 flex items-center justify-center p-6 text-center">
         <div className="max-w-md bg-white p-10 rounded-[3rem] shadow-2xl border-t-8 border-red-500">
           <ShieldAlert size={80} className="mx-auto text-red-500 mb-6" />
           <h1 className="text-3xl font-black text-slate-900 uppercase mb-4 tracking-tighter">Access Denied</h1>
           <p className="text-slate-500 font-medium mb-8 leading-relaxed">
-            You haven't finished all 6 Modules. A <span className="text-red-600 font-bold">Commander</span> must be fully trained.
+            You haven't finished all 6 Modules. A <span className="text-red-600 font-bold">Commander</span> must be fully trained before the final exam.
           </p>
           <div className="flex items-center justify-center gap-3 bg-slate-50 py-4 rounded-2xl border border-slate-100">
              <div className="w-2 h-2 bg-red-500 rounded-full animate-ping" />
-             <span className="text-slate-400 font-bold text-[10px] uppercase tracking-[0.2em]">Redirecting...</span>
+             <span className="text-slate-400 font-bold text-[10px] uppercase tracking-[0.2em]">Redirecting to Lab...</span>
           </div>
         </div>
       </main>
     );
   }
 
-  if (isAuthorized === null) return (
-    <main className="min-h-screen bg-slate-900 flex items-center justify-center">
-        <Activity className="text-blue-500 animate-spin mr-3" size={20} />
-        <div className="text-blue-500 font-black text-xs uppercase tracking-[0.5em]">Verifying...</div>
-    </main>
-  );
-
   // 3. RESULTS SCREEN
   if (showResults) {
-    const passed = score >= 12; // 80% to pass
+    const passed = score >= 12; // 80% to pass (12/15)
     return (
       <main className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
         <div className="max-w-xl w-full bg-white rounded-[3rem] p-8 md:p-12 shadow-2xl text-center border-4 border-white relative overflow-hidden">
           <h2 className="text-[10px] font-black text-blue-600 uppercase tracking-[0.4em] mb-4">Final Report</h2>
           {passed ? <Trophy size={80} className="mx-auto text-yellow-500 mb-6" /> : <ShieldAlert size={80} className="mx-auto text-slate-300 mb-6" />}
           <h1 className="text-3xl md:text-4xl font-black text-slate-900 uppercase mb-4 tracking-tighter">
-            {passed ? "Certified Commander" : "Incomplete Training"}
+            {passed ? "Certified Commander" : "Training Failed"}
           </h1>
           <p className="text-slate-500 text-lg mb-8 font-medium">
             Defense Accuracy: <span className="text-slate-900 font-black">{Math.round((score/questions.length)*100)}%</span>
@@ -174,7 +178,7 @@ export default function FinalAssessment() {
                 <User className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300" size={20} />
                 <input 
                   type="text" 
-                  placeholder="Your Full Name" 
+                  placeholder="Enter Name for Certificate" 
                   className="w-full pl-14 pr-6 py-5 rounded-2xl border-2 border-slate-100 focus:border-blue-600 outline-none font-bold uppercase"
                   value={userName}
                   onChange={(e) => setUserName(e.target.value)}
@@ -182,9 +186,9 @@ export default function FinalAssessment() {
               </div>
               <Link 
                 href={`/learning/completion?name=${encodeURIComponent(userName || "Cyber Commander")}`}
-                className="flex items-center justify-center gap-3 w-full py-5 bg-blue-600 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-slate-900 transition-all"
+                className="flex items-center justify-center gap-3 w-full py-5 bg-blue-600 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-slate-900 transition-all shadow-xl"
               >
-                Claim Certificate <Award size={18} />
+                Claim My Rank & Certificate <Award size={18} />
               </Link>
             </div>
           ) : (
@@ -200,25 +204,22 @@ export default function FinalAssessment() {
     );
   }
 
-  // 4. QUIZ SCREEN (NO SCROLL OPTIMIZED)
+  // 4. QUIZ SCREEN
   return (
-    <main className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
+    <main className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
       <div className="max-w-4xl w-full flex flex-col h-[90vh] max-h-[700px]">
         
-        {/* TOP STATUS BAR */}
         <div className="flex justify-between items-center mb-4 text-white px-2">
           <div className="text-[10px] font-black uppercase tracking-widest bg-white/5 px-4 py-2 rounded-full border border-white/10 flex items-center gap-2">
             <Fingerprint size={12} className="text-blue-500" />
             Stage {currentQuestion + 1} <span className="text-slate-500">/ {questions.length}</span>
           </div>
           <div className="text-[10px] font-black uppercase tracking-widest text-blue-400 flex items-center gap-2">
-             <Zap size={12} className="animate-pulse" /> Active Shielding
+             <Zap size={12} className="animate-pulse" /> Final Assessment
           </div>
         </div>
 
-        {/* MAIN QUESTION CARD */}
         <div className="bg-white rounded-[3rem] p-6 md:p-10 shadow-2xl relative overflow-hidden flex flex-col flex-1 border-b-[8px] border-blue-600/20">
-            {/* PROGRESS BAR */}
             <div className="absolute top-0 left-0 w-full h-2 bg-slate-100">
                  <div 
                     className="h-full bg-blue-600 transition-all duration-500" 
@@ -233,7 +234,6 @@ export default function FinalAssessment() {
                 </h2>
             </div>
 
-            {/* ANSWER GRID: 2 COLUMNS ON DESKTOP TO PREVENT SCROLLING */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {questions[currentQuestion].options.map((option, index) => (
                     <button
@@ -252,7 +252,7 @@ export default function FinalAssessment() {
         </div>
         
         <footer className="mt-6 text-center opacity-20">
-            <p className="text-white text-[9px] font-black uppercase tracking-[0.6em]">Neural Defense Protocol v4.0</p>
+            <p className="text-white text-[9px] font-black uppercase tracking-[0.6em]">Naija Cyber-Hub // Security Assessment</p>
         </footer>
       </div>
     </main>

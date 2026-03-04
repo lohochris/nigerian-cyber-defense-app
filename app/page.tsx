@@ -10,7 +10,8 @@ import {
   ArrowRight, 
   ShieldAlert, 
   ChevronRight,
-  Fingerprint
+  Fingerprint,
+  Zap
 } from 'lucide-react'
 
 export default function Home() {
@@ -109,28 +110,28 @@ export default function Home() {
             </div>
           </div>
 
-          {/* REPORT SCAM */}
+          {/* BANK KILL-SWITCH (Updated Path) */}
           <div 
             className="group p-8 rounded-[3rem] bg-slate-50 border-2 border-transparent hover:border-red-600 hover:bg-white transition-all cursor-pointer shadow-sm hover:shadow-2xl" 
-            onClick={() => router.push('/report')}
+            onClick={() => router.push('/emergency')}
           >
             <div className="w-16 h-16 bg-red-100 text-red-600 rounded-3xl flex items-center justify-center mb-10 group-hover:scale-110 transition-transform">
-              <ShieldAlert size={32} strokeWidth={2.5} />
+              <Zap size={32} strokeWidth={2.5} />
             </div>
-            <h3 className="text-2xl font-black mb-3 uppercase tracking-tighter text-slate-900">Action Center</h3>
-            <p className="text-slate-500 text-sm font-medium leading-relaxed mb-10">No keep quiet. Contact EFCC, NCC, and INTERPOL directly.</p>
+            <h3 className="text-2xl font-black mb-3 uppercase tracking-tighter text-slate-900">Kill-Switches</h3>
+            <p className="text-slate-500 text-sm font-medium leading-relaxed mb-10">Instant bank codes to freeze your accounts and stop stolen funds.</p>
             <div className="flex items-center gap-2 text-red-600 font-black text-[10px] uppercase tracking-[0.2em]">
-              Report Case <ChevronRight size={14} />
+              Lock Account <ChevronRight size={14} />
             </div>
           </div>
 
         </div>
       </section>
 
-      {/* EMERGENCY FLOATING ACTION */}
+      {/* EMERGENCY FLOATING ACTION (Updated Path) */}
       <div className="fixed bottom-8 right-8 flex flex-col items-end gap-4 z-50">
         <button 
-          onClick={() => router.push('/report')}
+          onClick={() => router.push('/emergency')}
           className="bg-red-600 text-white font-black py-5 px-10 rounded-full shadow-[0_20px_50px_rgba(220,38,38,0.3)] hover:bg-red-700 transition-all flex items-center gap-3 animate-pulse border-4 border-white active:scale-90"
         >
            <AlertTriangle size={24} fill="white" className="text-red-600" />
