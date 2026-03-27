@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Footer from "./components/Footer";
-import Navbar from "./components/Navbar"; // 1. Import the Navbar
+import Navbar from "./components/Navbar";
+import { LanguageProvider } from "./context/LanguageContext"; // Import the Provider
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,15 +37,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`} suppressHydrationWarning>
-        {/* 2. Place Navbar at the top level */}
-        <Navbar />
-
-        {/* 3. Wrap children in flex-grow and add top padding to clear the fixed Navbar */}
-        <main className="flex-grow pt-20">
-          {children}
-        </main>
-
-        <Footer />
+        {/* Wrap everything inside the LanguageProvider */}
+        <LanguageProvider>
+          <Navbar />
+          <main className="flex-grow pt-20">
+            {children}
+          </main>
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   );

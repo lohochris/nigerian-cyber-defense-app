@@ -1,6 +1,7 @@
 "use client"
 import React from 'react'
 import Link from 'next/link'
+import { useLanguage } from '../context/LanguageContext'
 import { 
   ShieldAlert, 
   Target, 
@@ -10,41 +11,72 @@ import {
   Languages,
   Zap,
   Radio,
-  Dot
+  Dot,
+  Info 
 } from 'lucide-react'
 
 export default function Navbar() {
+  const { lang, toggleLang } = useLanguage();
+  const isPidgin = lang === 'pidgin';
+
+  const translations = {
+    en: {
+      intel: "Security Intel",
+      about: "About",
+      mission: "Mission",
+      support: "Support",
+      lab: "Enter Lab",
+      ticker: [
+        "ALERT: New 'Bank Upgrade' SMS scams targeting OPay/PalmPay users. Do not click links!",
+        "Your OTP is secret — Never share it with anyone calling from \"Support\"",
+        "Stay Guarded: Report suspicious account activity to your bank immediately."
+      ]
+    },
+    pidgin: {
+      intel: "Beta Info",
+      about: "About Us",
+      mission: "Target", 
+      support: "Help Desk",
+      lab: "Enter Lab",
+      ticker: [
+        "WAKE UP: New format don cast! If dem send you SMS say make you 'Upgrade' OPay/PalmPay, no touch the link!",
+        "Your OTP na your life — No give anybody wey call you say dem be \"Support\"",
+        "Shine Your Eye: If you see any movement for your account wey you no understand, tell your bank sharp-sharp."
+      ]
+    }
+  };
+
+  const t = isPidgin ? translations.pidgin : translations.en;
+
   const tickerContent = (
     <div className="flex items-center gap-12 pr-12">
       <span className="flex items-center gap-2">
         <ShieldAlert size={14} strokeWidth={3} className="text-red-700" />
-        <span className="text-amber-950">ALERT: New &apos;Bank Upgrade&apos; SMS scams targeting OPay/PalmPay users. Do not click links!</span>
+        <span className="text-amber-950">{t.ticker[0]}</span>
       </span>
       <Dot className="text-amber-700" />
       <span className="flex items-center gap-2">
         <Zap size={14} fill="currentColor" className="text-amber-900" />
-        <span className="text-amber-950">Your OTP is secret — Never share it with anyone calling from &quot;Support&quot;</span>
+        <span className="text-amber-950">{t.ticker[1]}</span>
       </span>
       <Dot className="text-amber-700" />
       <span className="flex items-center gap-2">
         <Shield size={14} strokeWidth={3} className="text-amber-900" />
-        <span className="text-amber-950">Stay Guarded: Report suspicious account activity to your bank immediately.</span>
+        <span className="text-amber-950">{t.ticker[2]}</span>
       </span>
     </div>
   );
 
   return (
     <header className="fixed top-0 left-0 right-0 z-[100] font-sans">
-      {/* SEAMLESS SLOW TICKER */}
+      {/* TICKER BOX */}
       <div className="bg-amber-400 py-2.5 overflow-hidden border-b border-amber-500 shadow-sm flex relative">
-        {/* Fixed Label */}
         <div className="absolute left-0 top-0 bottom-0 bg-amber-500 px-4 flex items-center z-20 shadow-[5px_0_15px_rgba(0,0,0,0.1)]">
           <Radio size={12} className="text-amber-950 animate-pulse mr-2" />
-          <span className="text-[9px] font-black uppercase tracking-tighter text-amber-950">Security Intel</span>
+          <span className="text-[9px] font-black uppercase tracking-tighter text-amber-950">{t.intel}</span>
         </div>
 
         <div className="flex whitespace-nowrap animate-marquee-slow pl-[110px]">
-          {/* Double the content for a seamless infinite loop */}
           <div className="flex items-center text-[10px] font-black uppercase tracking-[0.2em]">
             {tickerContent}
             {tickerContent}
@@ -52,11 +84,11 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* MAIN NAVIGATION */}
+      {/* NAVIGATION BAR */}
       <nav className="bg-white/80 backdrop-blur-xl border-b border-slate-100 py-4 px-6">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           
-          {/* BRAND */}
+          {/* LOGO */}
           <Link href="/" className="flex items-center gap-3 group">
             <div className="relative">
               <div className="w-10 h-10 bg-slate-900 rounded-2xl flex items-center justify-center text-white transition-all duration-500 group-hover:bg-blue-600 group-hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] shadow-lg">
@@ -72,32 +104,48 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* NAV LINKS */}
-          <div className="flex items-center gap-4 lg:gap-10">
-            <div className="hidden md:flex gap-10">
-              {[
-                { name: "The Mission", href: "/about", icon: <Target size={14} /> },
-                { name: "Support", href: "/contact", icon: <Headset size={14} /> },
-              ].map((link) => (
-                <Link 
-                  key={link.name} 
-                  href={link.href} 
-                  className="text-[10px] font-black uppercase text-slate-500 hover:text-blue-600 transition-all flex items-center gap-2 tracking-[0.15em] relative group"
-                >
-                  {link.icon}
-                  {link.name}
-                  <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-blue-600 transition-all group-hover:w-full" />
-                </Link>
-              ))}
+          {/* LINK LIST */}
+          <div className="flex items-center gap-4 lg:gap-8">
+            <div className="hidden md:flex gap-8">
+              
+              {/* Corrected About Link */}
+              <Link 
+                href="/about" 
+                className="text-[10px] font-black uppercase text-slate-500 hover:text-blue-600 transition-all flex items-center gap-2 tracking-[0.15em] relative group"
+              >
+                <Info size={14} /> {t.about}
+                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-blue-600 transition-all group-hover:w-full" />
+              </Link>
+
+              {/* Corrected Mission Link */}
+              <Link 
+                href="/mission" 
+                className="text-[10px] font-black uppercase text-slate-500 hover:text-blue-600 transition-all flex items-center gap-2 tracking-[0.15em] relative group"
+              >
+                <Target size={14} /> {t.mission}
+                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-blue-600 transition-all group-hover:w-full" />
+              </Link>
+
+              {/* Corrected Contact Link */}
+              <Link 
+                href="/contact" 
+                className="text-[10px] font-black uppercase text-slate-500 hover:text-blue-600 transition-all flex items-center gap-2 tracking-[0.15em] relative group"
+              >
+                <Headset size={14} /> {t.support}
+                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-blue-600 transition-all group-hover:w-full" />
+              </Link>
             </div>
             
             <div className="h-6 w-[1px] bg-slate-100 hidden md:block" />
 
-            {/* CTA SECTION */}
+            {/* ACTION SECTION */}
             <div className="flex items-center gap-3">
-              <button className="hidden sm:flex text-[9px] font-black uppercase px-4 py-2 border-2 border-slate-100 rounded-xl hover:bg-slate-50 transition-all items-center gap-2 font-mono">
-                <Languages size={14} strokeWidth={3} className="text-blue-600" />
-                Pidgin: <span className="text-green-600">ON</span>
+              <button 
+                onClick={toggleLang}
+                className="hidden sm:flex text-[9px] font-black uppercase px-4 py-2 border-2 border-slate-100 rounded-xl hover:bg-slate-50 transition-all items-center gap-2 font-mono group active:scale-95"
+              >
+                <Languages size={14} strokeWidth={3} className={isPidgin ? "text-green-600" : "text-blue-600"} />
+                Pidgin: <span className={isPidgin ? "text-green-600" : "text-slate-400"}>{isPidgin ? "ON" : "OFF"}</span>
               </button>
               
               <Link 
@@ -105,7 +153,7 @@ export default function Navbar() {
                 className="bg-slate-900 text-white px-7 py-3 rounded-xl text-[10px] font-black uppercase hover:bg-blue-600 transition-all flex items-center gap-2 shadow-xl shadow-slate-200 active:scale-95"
               >
                 <Terminal size={14} strokeWidth={2.5} />
-                Enter Lab
+                {t.lab}
               </Link>
             </div>
           </div>
