@@ -11,7 +11,8 @@ import {
   Home,
   Lock,
   Smartphone,
-  AlertTriangle
+  AlertTriangle,
+  ArrowLeft
 } from 'lucide-react'
 
 export default function SecurityAudit() {
@@ -75,7 +76,6 @@ export default function SecurityAudit() {
         { text: "No, it's too stressful to type", p: "No, e de stress me to de type am", points: 0 }
       ]
     }
-    // ... Additional questions follow the same pattern
   ];
 
   const handleAnswer = (points: number) => {
@@ -87,88 +87,120 @@ export default function SecurityAudit() {
     }
   };
 
+  const handlePrevious = () => {
+    if (step > 0) setStep(step - 1);
+  };
+
   if (!mounted) return null;
 
   return (
-    <main className="min-h-screen bg-slate-50 p-6 flex flex-col items-center justify-center pt-24">
-      <div className="max-w-3xl w-full bg-white rounded-[3rem] p-8 md:p-12 shadow-2xl border-b-[12px] border-blue-600 relative overflow-hidden">
+    <main className="min-h-screen bg-[#f8fafc] p-4 md:p-6 flex flex-col items-center justify-center font-sans">
+      {/* Decorative Background Elements */}
+      <div className="fixed top-[-10%] left-[-10%] w-96 h-96 bg-blue-100 rounded-full blur-3xl opacity-50 -z-10" />
+      <div className="fixed bottom-[-10%] right-[-10%] w-96 h-96 bg-purple-100 rounded-full blur-3xl opacity-50 -z-10" />
+
+      <div className="max-w-3xl w-full bg-white rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-slate-100 relative overflow-hidden transition-all duration-500">
         
+        {/* Accent Bar */}
+        <div className="h-2 w-full bg-blue-600" />
+
         {!showResult ? (
-          <div className="relative z-10">
-            <div className="flex justify-between items-center mb-10">
-              <div className="h-3 w-2/3 bg-slate-100 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-blue-600 transition-all duration-700 ease-out" 
-                  style={{ width: `${((step + 1) / questions.length) * 100}%` }}
-                ></div>
-              </div>
-              <span className="font-black text-blue-600 text-xs uppercase tracking-widest ml-4 bg-blue-50 px-3 py-1 rounded-lg">
-                Phase {step + 1}/{questions.length}
+          <div className="p-8 md:p-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            {/* Header Area */}
+            <div className="flex justify-between items-center mb-8">
+              <button 
+                onClick={handlePrevious}
+                disabled={step === 0}
+                className={`flex items-center gap-2 text-sm font-bold uppercase tracking-wider transition-all cursor-pointer ${step === 0 ? 'opacity-0' : 'text-slate-400 hover:text-blue-600'}`}
+              >
+                <ArrowLeft size={16} /> Back
+              </button>
+              <span className="font-black text-blue-600 text-xs uppercase tracking-[0.2em] bg-blue-50 px-4 py-2 rounded-full shadow-sm">
+                Module {step + 1} of {questions.length}
               </span>
             </div>
 
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center">
-                {questions[step].icon}
-              </div>
-              <h2 className="text-2xl md:text-3xl font-black text-slate-900 leading-tight uppercase tracking-tighter">
-                Security Inquiry
-              </h2>
+            {/* Progress Bar */}
+            <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden mb-12">
+              <div 
+                className="h-full bg-blue-600 transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(37,99,235,0.4)]" 
+                style={{ width: `${((step + 1) / questions.length) * 100}%` }}
+              ></div>
             </div>
 
-            <p className="text-xl font-bold text-slate-800 mb-2">{questions[step].q}</p>
-            <p className="text-blue-600 font-black mb-10 text-lg italic uppercase tracking-tight">
-               "{questions[step].pq}"
-            </p>
+            {/* Question Content */}
+            <div className="flex items-center gap-5 mb-8">
+              <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center shadow-inner border border-slate-100">
+                {questions[step].icon}
+              </div>
+              <div>
+                <h2 className="text-xs font-black text-blue-500 uppercase tracking-widest mb-1">Cyber Intelligence</h2>
+                <h3 className="text-2xl md:text-3xl font-black text-slate-900 leading-tight tracking-tight">
+                  {questions[step].q}
+                </h3>
+              </div>
+            </div>
 
+            <div className="mb-10 p-4 bg-blue-50/50 rounded-2xl border-l-4 border-blue-600">
+                <p className="text-blue-700 font-bold text-lg italic leading-relaxed">
+                  "{questions[step].pq}"
+                </p>
+            </div>
+
+            {/* Options Grid */}
             <div className="grid grid-cols-1 gap-4">
               {questions[step].options.map((opt, idx) => (
                 <button 
                   key={idx}
                   onClick={() => handleAnswer(opt.points)}
-                  className="group text-left p-6 bg-slate-50 border-2 border-slate-100 rounded-[2rem] hover:border-blue-600 hover:bg-blue-50 transition-all active:scale-95 flex justify-between items-center"
+                  className="group relative text-left p-6 bg-white border-2 border-slate-100 rounded-3xl cursor-pointer
+                             hover:border-blue-600 hover:shadow-xl hover:shadow-blue-900/5 hover:-translate-y-1
+                             transition-all duration-300 active:scale-[0.98] flex justify-between items-center"
                 >
-                  <div>
-                    <p className="font-black text-slate-800 text-lg group-hover:text-blue-900 uppercase tracking-tight">{opt.text}</p>
-                    <p className="text-sm text-slate-500 font-bold group-hover:text-blue-600 italic">"{opt.p}"</p>
+                  <div className="pr-4">
+                    <p className="font-bold text-slate-800 text-lg group-hover:text-blue-900 transition-colors leading-snug">{opt.text}</p>
+                    <p className="text-sm text-slate-400 font-medium mt-1 italic group-hover:text-blue-400">"{opt.p}"</p>
                   </div>
-                  <ChevronRight className="text-slate-300 group-hover:text-blue-600 transition-colors" size={24} />
+                  <div className="bg-slate-50 group-hover:bg-blue-600 group-hover:text-white p-2 rounded-xl transition-all duration-300 shadow-sm">
+                    <ChevronRight size={20} />
+                  </div>
                 </button>
               ))}
             </div>
           </div>
         ) : (
-          <div className="text-center py-6 animate-in fade-in zoom-in duration-500">
+          <div className="text-center p-8 md:p-16 animate-in zoom-in fade-in duration-500">
+            {/* Result Header */}
             <div className="flex justify-center mb-8">
                {totalScore >= 40 ? (
-                 <div className="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center shadow-lg shadow-green-100">
-                    <ShieldCheck size={48} strokeWidth={2.5} />
+                 <div className="w-28 h-28 bg-green-50 text-green-500 rounded-full flex items-center justify-center border-4 border-green-100 shadow-xl animate-bounce-slow">
+                    <ShieldCheck size={56} strokeWidth={2} />
                  </div>
                ) : totalScore >= 25 ? (
-                 <div className="w-24 h-24 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center shadow-lg shadow-amber-100">
-                    <ShieldAlert size={48} strokeWidth={2.5} />
+                 <div className="w-28 h-28 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center border-4 border-amber-100 shadow-xl">
+                    <ShieldAlert size={56} strokeWidth={2} />
                  </div>
                ) : (
-                 <div className="w-24 h-24 bg-red-100 text-red-600 rounded-full flex items-center justify-center shadow-lg shadow-red-100">
-                    <ShieldX size={48} strokeWidth={2.5} />
+                 <div className="w-28 h-28 bg-red-50 text-red-500 rounded-full flex items-center justify-center border-4 border-red-100 shadow-xl">
+                    <ShieldX size={56} strokeWidth={2} />
                  </div>
                )}
             </div>
 
-            <h2 className="text-6xl font-black mb-2 uppercase tracking-tighter text-slate-900 leading-none">
-              {totalScore} <span className="text-2xl text-slate-400">/ 50</span>
-            </h2>
-            <p className="text-xs font-black text-slate-400 uppercase tracking-[0.3em] mb-8">Overall Immunity Rating</p>
+            <div className="mb-4">
+              <span className="text-slate-400 text-sm font-black uppercase tracking-[0.4em]">Audit Assessment</span>
+              <h2 className="text-7xl font-black text-slate-900 mt-2 mb-2 tracking-tighter">
+                {totalScore}<span className="text-3xl text-slate-300">/50</span>
+              </h2>
+            </div>
 
-            <div className="bg-slate-50 p-8 rounded-[2.5rem] mb-10 border border-slate-100">
-              <p className="text-xl font-black text-slate-800 uppercase tracking-tight mb-2">
-                {totalScore >= 40 
-                  ? "Cyber Commander" 
-                  : totalScore >= 25 
-                  ? "Vulnerable Target" 
-                  : "Critical Risk"}
+            <div className="max-w-md mx-auto bg-slate-50/80 backdrop-blur-sm p-8 rounded-[2.5rem] mb-12 border border-slate-100 shadow-inner">
+              <p className={`text-2xl font-black uppercase tracking-tight mb-3 ${
+                totalScore >= 40 ? "text-green-600" : totalScore >= 25 ? "text-amber-600" : "text-red-600"
+              }`}>
+                {totalScore >= 40 ? "Cyber Commander" : totalScore >= 25 ? "Vulnerable Target" : "Critical Risk"}
               </p>
-              <p className="text-slate-500 font-bold leading-relaxed italic">
+              <p className="text-slate-600 font-bold leading-relaxed italic text-lg">
                 {totalScore >= 40 
                   ? "Excellent! You sabi the scope. Scammers go hard to catch you." 
                   : totalScore >= 25 
@@ -177,16 +209,21 @@ export default function SecurityAudit() {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Actions */}
+            <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
               <button 
                 onClick={() => router.push('/learning')}
-                className="flex items-center justify-center gap-3 py-5 bg-blue-600 text-white rounded-[2rem] font-black text-lg shadow-xl shadow-blue-100 hover:bg-blue-700 transition-all uppercase tracking-widest"
+                className="w-full md:w-auto px-10 py-5 bg-blue-600 text-white rounded-full cursor-pointer
+                           font-black text-lg shadow-xl shadow-blue-200 hover:bg-blue-700 hover:shadow-2xl 
+                           hover:-translate-y-1 transition-all active:scale-95 uppercase tracking-widest flex items-center justify-center gap-3"
               >
                 <BookOpen size={20} /> Learning Lab
               </button>
               <button 
                 onClick={() => {setStep(0); setTotalScore(0); setShowResult(false);}}
-                className="flex items-center justify-center gap-3 py-5 bg-white text-slate-900 border-2 border-slate-200 rounded-[2rem] font-black text-lg hover:bg-slate-50 transition-all uppercase tracking-widest"
+                className="w-full md:w-auto px-10 py-5 bg-white text-slate-900 border-2 border-slate-200 
+                           rounded-full cursor-pointer font-black text-lg hover:bg-slate-50 
+                           transition-all active:scale-95 uppercase tracking-widest flex items-center justify-center gap-3"
               >
                 <RotateCcw size={20} /> Retest
               </button>
@@ -194,9 +231,10 @@ export default function SecurityAudit() {
             
             <button 
               onClick={() => router.push('/')}
-              className="mt-8 flex items-center justify-center gap-2 mx-auto text-slate-400 font-black uppercase text-[10px] tracking-widest hover:text-slate-900 transition-colors"
+              className="mt-12 flex items-center justify-center gap-2 mx-auto text-slate-400 cursor-pointer 
+                         font-black uppercase text-xs tracking-widest hover:text-blue-600 transition-colors"
             >
-              <Home size={12} /> Return to Command
+              <Home size={14} /> Return to Dashboard
             </button>
           </div>
         )}

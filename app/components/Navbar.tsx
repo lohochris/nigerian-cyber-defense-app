@@ -51,29 +51,29 @@ export default function Navbar() {
   const tickerContent = (
     <div className="flex items-center gap-12 pr-12">
       <span className="flex items-center gap-2">
-        <ShieldAlert size={14} strokeWidth={3} className="text-red-700" />
-        <span className="text-amber-950">{t.ticker[0]}</span>
+        <ShieldAlert size={14} strokeWidth={3} className="text-blue-400" />
+        <span className="text-slate-300">{t.ticker[0]}</span>
       </span>
-      <Dot className="text-amber-700" />
+      <Dot className="text-slate-600" />
       <span className="flex items-center gap-2">
-        <Zap size={14} fill="currentColor" className="text-amber-900" />
-        <span className="text-amber-950">{t.ticker[1]}</span>
+        <Zap size={14} fill="currentColor" className="text-blue-500" />
+        <span className="text-slate-300">{t.ticker[1]}</span>
       </span>
-      <Dot className="text-amber-700" />
+      <Dot className="text-slate-600" />
       <span className="flex items-center gap-2">
-        <Shield size={14} strokeWidth={3} className="text-amber-900" />
-        <span className="text-amber-950">{t.ticker[2]}</span>
+        <Shield size={14} strokeWidth={3} className="text-blue-400" />
+        <span className="text-slate-300">{t.ticker[2]}</span>
       </span>
     </div>
   );
 
   return (
     <header className="fixed top-0 left-0 right-0 z-[100] font-sans">
-      {/* TICKER BOX */}
-      <div className="bg-amber-400 py-2.5 overflow-hidden border-b border-amber-500 shadow-sm flex relative">
-        <div className="absolute left-0 top-0 bottom-0 bg-amber-500 px-4 flex items-center z-20 shadow-[5px_0_15px_rgba(0,0,0,0.1)]">
-          <Radio size={12} className="text-amber-950 animate-pulse mr-2" />
-          <span className="text-[9px] font-black uppercase tracking-tighter text-amber-950">{t.intel}</span>
+      {/* BRANDED TICKER BOX */}
+      <div className="bg-slate-900 py-2.5 overflow-hidden border-b border-slate-800 shadow-sm flex relative">
+        <div className="absolute left-0 top-0 bottom-0 bg-blue-600 px-4 flex items-center z-20 shadow-[5px_0_15px_rgba(0,0,0,0.3)]">
+          <Radio size={12} className="text-white animate-pulse mr-2" />
+          <span className="text-[9px] font-black uppercase tracking-tighter text-white">{t.intel}</span>
         </div>
 
         <div className="flex whitespace-nowrap animate-marquee-slow pl-[110px]">
@@ -89,7 +89,7 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           
           {/* LOGO */}
-          <Link href="/" className="flex items-center gap-3 group">
+          <Link href="/" className="flex items-center gap-3 group cursor-pointer">
             <div className="relative">
               <div className="w-10 h-10 bg-slate-900 rounded-2xl flex items-center justify-center text-white transition-all duration-500 group-hover:bg-blue-600 group-hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] shadow-lg">
                 <Shield size={20} strokeWidth={2.5} />
@@ -107,29 +107,25 @@ export default function Navbar() {
           {/* LINK LIST */}
           <div className="flex items-center gap-4 lg:gap-8">
             <div className="hidden md:flex gap-8">
-              
-              {/* Corrected About Link */}
               <Link 
                 href="/about" 
-                className="text-[10px] font-black uppercase text-slate-500 hover:text-blue-600 transition-all flex items-center gap-2 tracking-[0.15em] relative group"
+                className="text-[10px] font-black uppercase text-slate-500 hover:text-blue-600 transition-all flex items-center gap-2 tracking-[0.15em] relative group cursor-pointer"
               >
                 <Info size={14} /> {t.about}
                 <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-blue-600 transition-all group-hover:w-full" />
               </Link>
 
-              {/* Corrected Mission Link */}
               <Link 
                 href="/mission" 
-                className="text-[10px] font-black uppercase text-slate-500 hover:text-blue-600 transition-all flex items-center gap-2 tracking-[0.15em] relative group"
+                className="text-[10px] font-black uppercase text-slate-500 hover:text-blue-600 transition-all flex items-center gap-2 tracking-[0.15em] relative group cursor-pointer"
               >
                 <Target size={14} /> {t.mission}
                 <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-blue-600 transition-all group-hover:w-full" />
               </Link>
 
-              {/* Corrected Contact Link */}
               <Link 
                 href="/contact" 
-                className="text-[10px] font-black uppercase text-slate-500 hover:text-blue-600 transition-all flex items-center gap-2 tracking-[0.15em] relative group"
+                className="text-[10px] font-black uppercase text-slate-500 hover:text-blue-600 transition-all flex items-center gap-2 tracking-[0.15em] relative group cursor-pointer"
               >
                 <Headset size={14} /> {t.support}
                 <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-blue-600 transition-all group-hover:w-full" />
@@ -142,15 +138,18 @@ export default function Navbar() {
             <div className="flex items-center gap-3">
               <button 
                 onClick={toggleLang}
-                className="hidden sm:flex text-[9px] font-black uppercase px-4 py-2 border-2 border-slate-100 rounded-xl hover:bg-slate-50 transition-all items-center gap-2 font-mono group active:scale-95"
+                className="hidden sm:flex text-[9px] font-black uppercase px-4 py-2 border-2 border-slate-100 rounded-xl hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all items-center gap-2 font-mono group active:scale-95 cursor-pointer"
               >
-                <Languages size={14} strokeWidth={3} className={isPidgin ? "text-green-600" : "text-blue-600"} />
-                Pidgin: <span className={isPidgin ? "text-green-600" : "text-slate-400"}>{isPidgin ? "ON" : "OFF"}</span>
+                <Languages size={14} strokeWidth={3} className={isPidgin ? "text-green-500" : "text-blue-600"} />
+                <span>Pidgin:</span>
+                <span className={isPidgin ? "text-green-500" : "text-slate-400 group-hover:text-blue-400"}>
+                  {isPidgin ? "ON" : "OFF"}
+                </span>
               </button>
               
               <Link 
                 href="/learning" 
-                className="bg-slate-900 text-white px-7 py-3 rounded-xl text-[10px] font-black uppercase hover:bg-blue-600 transition-all flex items-center gap-2 shadow-xl shadow-slate-200 active:scale-95"
+                className="bg-slate-900 text-white px-7 py-3 rounded-xl text-[10px] font-black uppercase hover:bg-blue-600 transition-all flex items-center gap-2 shadow-xl shadow-slate-200 active:scale-95 cursor-pointer"
               >
                 <Terminal size={14} strokeWidth={2.5} />
                 {t.lab}
