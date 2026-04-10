@@ -32,7 +32,7 @@ export default function Footer() {
                 <Cpu size={18} strokeWidth={2.5} />
               </div>
               <span className="text-2xl font-black tracking-tighter text-slate-900 uppercase italic">
-                Project<span className="text-blue-600">Guard</span>
+                Cyber<span className="text-blue-600">Guard</span>
               </span>
             </Link>
             <p className="text-slate-500 text-sm max-w-sm leading-relaxed font-medium mb-8">
