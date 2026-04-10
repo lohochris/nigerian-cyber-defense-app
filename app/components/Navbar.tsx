@@ -121,7 +121,6 @@ export default function Navbar() {
                 onClick={toggleLang} 
                 className="nav-lab-btn group cursor-pointer"
               >
-                {/* Fixed Hover logic: Added group-hover to prefix */}
                 <span className="text-slate-600 transition-colors group-hover:text-blue-600">LANG:</span>
                 <span className={`${isPidgin ? "text-green-600" : "text-blue-600"} font-black`}>
                   {isPidgin ? "PDG" : "ENG"}
@@ -134,7 +133,7 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* MOBILE TOGGLE - Enhanced Visibility when open */}
+          {/* MOBILE TOGGLE */}
           <button 
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className={`lg:hidden p-2 rounded-lg z-[110] transition-all cursor-pointer ${isMenuOpen ? 'text-white bg-white/20' : 'text-slate-900 bg-slate-100'}`}
@@ -143,7 +142,7 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* MOBILE MENU OVERLAY - Added explicit background and padding */}
+        {/* MOBILE MENU OVERLAY - Fixed visibility with bg-slate-950 and white text */}
         <div className={`
           fixed inset-0 bg-slate-950 z-[100] lg:hidden flex flex-col pt-32 px-8 transition-all duration-500 ease-in-out
           ${isMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0 pointer-events-none'}
@@ -180,7 +179,7 @@ export default function Navbar() {
       </nav>
 
       <style jsx>{`
-        /* DESKTOP BUTTONS: Fixed Hover color change */
+        /* All Desktop Nav Buttons turn blue on hover */
         .nav-lab-btn {
           @apply flex items-center gap-2 px-5 py-2.5 border border-slate-200 rounded-lg 
                  hover:border-blue-600 hover:text-blue-600 hover:bg-blue-50/50 transition-all duration-200 
@@ -188,7 +187,7 @@ export default function Navbar() {
                  active:scale-95 hover:shadow-sm;
         }
         
-        /* LANGUAGE BUTTON PREFIX: Force blue on hover */
+        /* Ensures the "LANG:" text also turns blue */
         .nav-lab-btn.group:hover .text-slate-600 {
           @apply text-blue-600;
         }
@@ -199,11 +198,11 @@ export default function Navbar() {
                  shadow-md active:scale-95 cursor-pointer;
         }
         
-        /* MOBILE MENU BUTTONS: Forced Visibility (White text) */
+        /* Mobile buttons fixed to white for visibility on dark background */
         .mobile-lab-btn {
           @apply flex items-center gap-5 p-6 border border-white/20 rounded-2xl text-xl 
-                 font-bold uppercase tracking-tight text-white/90 active:text-blue-400 
-                 hover:text-blue-400 transition-all cursor-pointer active:scale-95 bg-slate-900/50;
+                 font-bold uppercase tracking-tight text-white transition-all cursor-pointer 
+                 active:scale-95 bg-white/5 active:bg-blue-600/20 active:text-blue-400;
         }
       `}</style>
     </header>
