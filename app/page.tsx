@@ -163,15 +163,15 @@ export default function Home() {
           onClick={() => router.push('/emergency')}
           className="bg-red-600 text-white font-black py-5 px-10 rounded-full cursor-pointer
                      shadow-[0_20px_50px_rgba(220,38,38,0.3)] hover:bg-red-700 hover:shadow-[0_25px_60px_rgba(220,38,38,0.5)]
-                     hover:-translate-y-1 transition-all flex items-center gap-3 animate-pulse border-4 border-white active:scale-90"
+                     hover:-translate-y-1 transition-all flex items-center gap-3 animate-pulse border-2 border-white active:scale-90"
         >
-           <AlertTriangle size={24} fill="white" className="text-red-600" />
-           <span className="uppercase text-xs tracking-[0.2em]">I&apos;m Under Attack!</span>
+           <AlertTriangle size={12} fill="white" className="text-red-600" />
+           <span className="uppercase text-xs tracking-[0.2em]">If You are Under Attack! Use the Kill Switch </span>
         </button>
       </div>
 
       <footer className="py-20 text-slate-400 text-[10px] font-bold uppercase tracking-[0.5em] opacity-60 hover:opacity-100 transition-opacity">
-        Stay Vigilant • Project Guard 2026
+        Stay Vigilant • CyberGuard 2026
       </footer>
 
     </main>
