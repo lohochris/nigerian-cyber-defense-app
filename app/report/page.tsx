@@ -17,9 +17,6 @@ import {
   LucideIcon
 } from 'lucide-react'
 
-/**
- * TYPESCRIPT INTERFACES
- */
 interface Agency {
   name: string;
   desc: string;
@@ -31,13 +28,10 @@ interface Agency {
   type: 'phone' | 'whatsapp';
 }
 
-/**
- * AGENCY CARD COMPONENT
- */
 const AgencyCard = ({ agency }: { agency: Agency }) => (
-  <div className="group bg-white rounded-[2.5rem] p-8 shadow-sm border border-slate-100 hover:border-red-500/30 transition-all flex flex-col h-full">
+  <div className="group bg-white rounded-[2.5rem] p-8 shadow-sm border border-slate-100 hover:border-blue-500/30 transition-all flex flex-col h-full hover:shadow-xl hover:-translate-y-1">
     <div className="flex justify-between items-start mb-6">
-      <div className="p-4 bg-slate-50 rounded-2xl group-hover:scale-110 group-hover:bg-red-50 transition-all duration-300">
+      <div className="p-4 bg-slate-50 rounded-2xl group-hover:scale-110 group-hover:bg-blue-50 transition-all duration-300">
         {agency.icon}
       </div>
       
@@ -87,8 +81,8 @@ export default function ReportPage() {
       action: "Official Website",
       link: "https://www.efcc.gov.ng/",
       phone: "08093322644",
-      icon: <Eye className="text-red-600" size={28} />,
-      btnColor: "bg-red-600 hover:bg-red-700 shadow-red-200",
+      icon: <Eye className="text-blue-600" size={28} />,
+      btnColor: "bg-slate-900 hover:bg-blue-600 shadow-slate-200",
       type: "phone"
     },
     {
@@ -116,102 +110,80 @@ export default function ReportPage() {
   if (!mounted) return null;
 
   return (
-    <main className="min-h-screen bg-[#f8fafc] pb-20 font-sans selection:bg-red-100">
+    <main className="min-h-screen bg-[#f8fafc] pb-20 font-sans selection:bg-blue-100">
       
-      {/* HEADER SECTION */}
-      <header className="bg-red-600 text-white pt-10 pb-20 px-6 rounded-b-[3rem] shadow-2xl relative overflow-hidden">
-        <ShieldAlert size={200} className="absolute -right-10 -bottom-10 opacity-10 pointer-events-none rotate-12" />
+      {/* HEADER SECTION - Matched pt-28 spacing */}
+      <header className="bg-white border-b border-slate-100 pt-28 pb-12 px-6 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-50/50 rounded-full blur-3xl -mr-64 -mt-64 pointer-events-none" />
         
         <div className="max-w-5xl mx-auto relative z-10">
-          <Link href="/" className="inline-flex items-center gap-2 text-white/70 hover:text-white font-black mb-6 uppercase tracking-[0.2em] text-[10px] transition-all group cursor-pointer">
+          <Link href="/" className="inline-flex items-center gap-2 text-slate-400 hover:text-blue-600 font-black mb-6 uppercase tracking-[0.2em] text-[10px] transition-all group cursor-pointer">
             <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> Back to Base
           </Link>
           
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div>
-              <h1 className="text-4xl md:text-5xl font-black uppercase italic tracking-tighter leading-none">
-                Action Center
-              </h1>
-              <p className="text-lg opacity-80 font-medium mt-2">
-                &quot;No keep quiet. Talk so dem go fit catch dem.&quot;
-              </p>
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-3">
+              <span className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-red-200">
+                Live Response
+              </span>
+              <div className="h-[1px] w-12 bg-slate-200" />
             </div>
-            <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 hidden md:block">
-              <p className="text-[10px] font-black uppercase tracking-widest text-white">Priority Reporting</p>
-            </div>
+            <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none text-slate-900">
+              Action <span className="text-blue-600">Center</span>
+            </h1>
+            <p className="text-lg text-slate-500 font-medium max-w-xl">
+              "No keep quiet. Talk so dem go fit catch dem." 
+            </p>
           </div>
         </div>
       </header>
 
-      <div className="max-w-5xl mx-auto px-6 -mt-10 relative z-20">
+      <div className="max-w-5xl mx-auto px-6 -mt-6 relative z-20">
         
-        {/* EMERGENCY BANNER - ACTIVE 122 DIALER */}
-        <div className="bg-white p-5 rounded-3xl shadow-xl border-2 border-yellow-400 mb-8 flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden relative">
+        {/* EMERGENCY BANNER */}
+        <div className="bg-white p-5 rounded-3xl shadow-xl border border-slate-100 mb-8 flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden relative">
+           <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-red-600" />
           <div className="flex items-center gap-5 text-left">
-            <div className="bg-yellow-400 p-4 rounded-2xl text-yellow-950 animate-pulse">
+            <div className="bg-red-50 p-4 rounded-2xl text-red-600 animate-pulse">
               <PhoneCall size={24} strokeWidth={3} />
             </div>
             <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-yellow-700">Immediate Threat?</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Immediate Threat?</p>
               <p className="text-xl font-black text-slate-900 tracking-tight">Dial <span className="text-red-600">122</span> now</p>
             </div>
           </div>
           
-          <div className="flex gap-3 w-full md:w-auto">
-            {/* The tel:122 protocol makes this button active */}
-            <a 
-              href="tel:122" 
-              className="flex-1 md:flex-none text-center bg-red-600 text-white px-8 py-4 rounded-xl font-black uppercase text-xs tracking-widest 
-                         hover:bg-red-700 hover:shadow-2xl hover:-translate-y-1 transition-all active:scale-95 cursor-pointer shadow-lg shadow-red-200"
-            >
-              Emergency Call (122)
-            </a>
-          </div>
+          <a href="tel:122" className="w-full md:w-auto text-center bg-red-600 text-white px-10 py-4 rounded-xl font-black uppercase text-xs tracking-widest hover:bg-red-700 transition-all active:scale-95 cursor-pointer shadow-lg">
+            Emergency Call
+          </a>
         </div>
 
-        {/* AGENCY LISTING GRID */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {agencies.map((agency, index) => (
             <AgencyCard key={index} agency={agency} />
           ))}
         </div>
 
-        {/* EVIDENCE CHECKLIST SECTION */}
-        <section className="mt-12 bg-slate-900 rounded-[3.5rem] p-8 md:p-12 text-white relative overflow-hidden">
+        {/* CHECKLIST */}
+        <section className="mt-12 bg-slate-900 rounded-[3.5rem] p-8 md:p-12 text-white relative overflow-hidden shadow-2xl">
           <div className="relative z-10 text-left">
             <div className="flex items-center gap-4 mb-10">
-              <div className="p-3 bg-red-600 rounded-2xl shadow-lg shadow-red-900/50">
+              <div className="p-3 bg-blue-600 rounded-2xl shadow-lg shadow-blue-900/50">
                 <Info size={20} />
               </div>
               <h3 className="text-2xl font-black uppercase italic tracking-tight">Evidence Checklist</h3>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <ChecklistItem 
-                icon={Camera} 
-                title="Screenshots" 
-                color="text-red-500"
-                text="Capture conversations, payment receipts, and scammer profile details."
-              />
-              <ChecklistItem 
-                icon={History} 
-                title="Bank Details" 
-                color="text-blue-500"
-                text="Save every account name and number the scammer shared with you."
-              />
-              <ChecklistItem 
-                icon={AlertTriangle} 
-                title="Phone Records" 
-                color="text-yellow-500"
-                text="Document the phone numbers or WhatsApp IDs used by the suspects."
-              />
+              <ChecklistItem icon={Camera} title="Screenshots" color="text-blue-400" text="Capture conversations and receipts." />
+              <ChecklistItem icon={History} title="Bank Details" color="text-blue-400" text="Save account names and numbers." />
+              <ChecklistItem icon={AlertTriangle} title="Phone Records" color="text-yellow-400" text="Document IDs and phone numbers." />
             </div>
           </div>
-          <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/10 blur-[100px] rounded-full"></div>
         </section>
 
         <footer className="mt-12 text-center pb-10">
-          <div className="inline-flex items-center gap-3 px-6 py-3 bg-slate-100 rounded-full">
+          <div className="inline-flex items-center gap-3 px-6 py-3 bg-white border border-slate-100 rounded-full shadow-sm">
             <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
             <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
               Verified Reporting Channels • Project Guard 2026
@@ -223,9 +195,6 @@ export default function ReportPage() {
   )
 }
 
-/**
- * HELPER COMPONENT FOR CHECKLIST
- */
 const ChecklistItem = ({ icon: Icon, title, text, color }: { icon: LucideIcon, title: string, text: string, color: string }) => (
   <div className="flex gap-4 group cursor-default">
     <div className={`${color} shrink-0 group-hover:scale-125 transition-transform duration-300`}>

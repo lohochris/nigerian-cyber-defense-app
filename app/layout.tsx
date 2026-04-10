@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "./globals.css"; // Ensure this file exists in the same 'app' folder
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
-import { LanguageProvider } from "./context/LanguageContext"; // Import the Provider
+import { LanguageProvider } from "./context/LanguageContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,11 +36,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`} suppressHydrationWarning>
-        {/* Wrap everything inside the LanguageProvider */}
+      <body 
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`} 
+        suppressHydrationWarning
+      >
         <LanguageProvider>
           <Navbar />
-          <main className="flex-grow pt-20">
+          {/* Main now has 0 global padding so individual pages control their Hero height */}
+          <main className="flex-grow">
             {children}
           </main>
           <Footer />

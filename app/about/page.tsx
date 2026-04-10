@@ -38,6 +38,17 @@ const PillarCard = ({ icon: Icon, title, desc }: Pillar) => (
   </div>
 );
 
+/**
+ * HELPER BADGE COMPONENT
+ * CORRECTED: Removed 'uppercase' class to allow 'Ph.D.' to render properly
+ */
+const Badge = ({ icon: Icon, text }: { icon: LucideIcon, text: string }) => (
+  <div className="px-5 py-3 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 flex items-center gap-3 hover:bg-white/10 transition-colors">
+    <Icon size={16} className="text-blue-400" />
+    <span className="text-[10px] font-black tracking-widest text-slate-200">{text}</span>
+  </div>
+);
+
 export default function AboutPage() {
   const { lang } = useLanguage();
   const [mounted, setMounted] = useState(false);
@@ -59,7 +70,7 @@ export default function AboutPage() {
         { title: "Proactive Defense", desc: "We leverage modern cloud architectures to provide real-time security intelligence and sub-100ms access to emergency banking protocols.", icon: ShieldCheck }
       ],
       researcherTitle: "Lead Researcher Profile",
-      researcherBio: "Loho Christopher Dondo is an academic professional and researcher specializing in Applied Mathematics, Software Development, Data Analytics and Cybersecurity. Currently, a  Lecturer at Skyline University Nigeria and a Ph.D. candidate at Bayero University Kano, his work synthesizes mathematical modeling with human-centered digital security."
+      researcherBio: "Loho Christopher Dondo is an academic professional and researcher specializing in Applied Mathematics, Software Development, Data Analytics and Cybersecurity. Currently, a Lecturer at Skyline University Nigeria and a Ph.D. candidate at Bayero University Kano, his work synthesizes mathematical modeling with human-centered digital security."
     },
     pidgin: {
       tag: "Correct Research Work",
@@ -84,18 +95,17 @@ export default function AboutPage() {
   return (
     <main className="min-h-screen bg-white pb-20 selection:bg-blue-100 selection:text-blue-900">
       
-      {/* HERO SECTION */}
-      <section className="pt-32 pb-24 px-6 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-blue-50 via-white to-white border-b border-slate-100">
+      {/* HERO SECTION - Updated pt-28 to stay close to Navbar */}
+      <section className="pt-28 pb-20 md:pt-36 md:pb-24 px-6 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-blue-50 via-white to-white border-b border-slate-100">
         <div className="max-w-5xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 py-2 px-5 rounded-full bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.3em] mb-10 shadow-2xl">
             <Fingerprint size={12} className="text-blue-400" />
             {t.tag}
           </div>
-          <h1 className="text-4xl md:text-6xl font-black tracking-tighter mb-10 leading-[1.1] text-balance uppercase">
-            <span className="text-slate-900">Securing the Digital Frontier</span>{' '}
-            <span className="text-blue-600 block md:inline">for Every Nigerian.</span>
+          <h1 className="text-4xl md:text-[5rem] font-black tracking-tighter mb-10 leading-[0.9] text-balance uppercase text-slate-900">
+            Securing the <span className="text-blue-600">Digital Frontier</span> for Nigeria.
           </h1>
-          <p className="text-xl md:text-2xl text-slate-500 font-medium leading-relaxed max-w-3xl mx-auto text-center">
+          <p className="text-lg md:text-xl text-slate-500 font-medium leading-relaxed max-w-3xl mx-auto text-center">
             {t.intro}
           </p>
         </div>
@@ -131,13 +141,14 @@ export default function AboutPage() {
           <div className="relative group">
             <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-[4rem] blur opacity-10 group-hover:opacity-30 transition duration-1000"></div>
             
-            <div className="relative bg-slate-900 rounded-[3.5rem] p-8 md:p-20 text-white overflow-hidden shadow-2xl">
+            <div className="relative bg-slate-900 rounded-[3.5rem] p-8 md:p-20 text-white overflow-hidden shadow-2xl border border-white/5">
               <div className="grid lg:grid-cols-12 gap-12 items-center">
                 
-                <div className="lg:col-span-8 relative z-10">
+                <div className="lg:col-span-8 relative z-10 text-left">
                   <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-blue-400 mb-10 flex items-center gap-3">
                     <Award size={18} /> {t.researcherTitle}
                   </h3>
+                  
                   <p className="text-2xl md:text-3xl font-bold leading-snug mb-12 text-justify tracking-tight [text-justify:inter-word]">
                     {t.researcherBio}
                   </p>
@@ -147,6 +158,7 @@ export default function AboutPage() {
                     <Badge icon={BookOpen} text="Ph.D. Candidate (BUK)" />
                     <Badge icon={Code2} text="eHA Academy Alum" />
                     <Badge icon={Cpu} text="ALX Africa Alum" />
+                    
                     <div className="px-5 py-3 bg-blue-600 rounded-2xl flex items-center gap-3 shadow-lg shadow-blue-900/50 hover:bg-blue-500 transition-colors cursor-default">
                       <ShieldCheck size={16} />
                       <span className="text-[10px] font-black uppercase tracking-widest">3MTT Cybersecurity Alum</span>
@@ -164,9 +176,6 @@ export default function AboutPage() {
                 </div>
 
               </div>
-              
-              {/* Decorative Geometric Overlay */}
-              <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-blue-600/10 to-transparent"></div>
             </div>
           </div>
 
@@ -179,13 +188,3 @@ export default function AboutPage() {
     </main>
   );
 }
-
-/**
- * HELPER BADGE COMPONENT
- */
-const Badge = ({ icon: Icon, text }: { icon: LucideIcon, text: string }) => (
-  <div className="px-5 py-3 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 flex items-center gap-3 hover:bg-white/10 transition-colors">
-    <Icon size={16} className="text-blue-400" />
-    <span className="text-[10px] font-black uppercase tracking-widest">{text}</span>
-  </div>
-);
