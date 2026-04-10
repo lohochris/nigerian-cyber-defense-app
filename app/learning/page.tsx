@@ -7,9 +7,8 @@ import {
   Lock, 
   ChevronLeft, 
   UserPlus, 
-  CheckCircle2,
   Trophy,
-  LayoutDashboard
+  Video
 } from 'lucide-react'
 import ModuleCard from '@/app/components/ModuleCard' 
 
@@ -21,9 +20,7 @@ function LearningLabContent() {
   const referralSource = searchParams.get('ref');
   const isNewSession = searchParams.get('new');
 
-  // Handle Session Logic & Load Progress
   useEffect(() => {
-    // If URL has ?new=true, wipe everything for a fresh start
     if (isNewSession === 'true') {
       const keys = Object.keys(localStorage);
       keys.forEach(key => {
@@ -36,14 +33,12 @@ function LearningLabContent() {
       return;
     }
 
-    // Otherwise, load existing progress
     const savedProgress = localStorage.getItem('completedModules');
     if (savedProgress) {
       setCompletedModules(JSON.parse(savedProgress));
     }
   }, [isNewSession, router]);
 
-  // Manual Reset for a New Learner
   const resetProgress = () => {
     if (confirm("This will clear all progress for a new learner. Continue?")) {
       const keys = Object.keys(localStorage);
@@ -53,11 +48,10 @@ function LearningLabContent() {
         }
       });
       setCompletedModules([]);
-      window.location.reload(); // Refresh to reset all component internal states
+      window.location.reload();
     }
   };
 
-  // Callback for when a module is marked "Mastered"
   const handleModuleComplete = (id: string) => {
     setCompletedModules((prev) => {
       if (prev.includes(id)) return prev;
@@ -67,6 +61,7 @@ function LearningLabContent() {
     });
   };
 
+  // UPDATED: Included all training videos and additional resources
   const stories = [
     { id: "sim-security", module: "Module 1", title: "SIM Card & Data Security", pidginTitle: "No let dem pull money from your SIM", description: "Learn why your SIM card is the key to your bank account and how to set a 'Double-Lock' PIN today.", youtubeId: "d7CvC1Z8QkQ", path: "/learning/sim-armor" },
     { id: "social-eng", module: "Module 2", title: "Social Engineering Defense", pidginTitle: "Caution: No give out your PIN", description: "Learn how to spot the psychological tricks hackers use to steal your OTP or BVN.", youtubeId: "qnUNRdbtKjU", path: "/learning/social-eng" },
@@ -74,6 +69,14 @@ function LearningLabContent() {
     { id: "mistaken-transfer", module: "Module 4", title: "The 'Mistaken' Transfer Trap", pidginTitle: "Mistake Credit: No send am back!", description: "Real stories of ₦1.5 Billion mistaken credits and legal rules for returning money.", youtubeId: "6HhWC8rB7Fw", path: "/learning/mistaken-transfer" },
     { id: "ai-voice", module: "Module 5", title: "AI Voice & Family Scams", pidginTitle: "Family Emergency: Verify the Voice", description: "Scammers now clone voices of loved ones. Learn how to spot AI scams.", youtubeId: "pJZYd_65xs4", path: "/learning/ai-scams" },
     { id: "public-safety", module: "Module 6", title: "Public WiFi & USB Safety", pidginTitle: "Free WiFi: The Silent Thief", description: "Watch how 'Juice Jacking' allows hackers to see your bank app.", youtubeId: "dNiYae0iZ-U", path: "/learning/public-safety" }
+  ];
+
+  // NEW: Additional educational resources
+  const resources = [
+    { id: "passwords", title: "Strong Password Mastery", youtubeId: "g8dGRuX-K6k" },
+    { id: "2fa", title: "2FA Setup Guide", youtubeId: "0mYq5LrQdoU" },
+    { id: "phishing", title: "Phishing Awareness", youtubeId: "oZqF7JqP5pY" },
+    { id: "whatsapp", title: "WhatsApp Privacy", youtubeId: "BKZqPJqWmZw" }
   ];
 
   const progressPercentage = (completedModules.length / stories.length) * 100;
@@ -88,7 +91,6 @@ function LearningLabContent() {
       )}
 
       <div className="max-w-6xl mx-auto">
-        {/* TOP NAV */}
         <div className="flex justify-between items-center mb-12">
           <Link href="/" className="group text-slate-400 font-black inline-flex items-center gap-2 hover:text-blue-600 transition-colors uppercase text-[10px] tracking-widest">
             <ChevronLeft size={14} strokeWidth={3} className="group-hover:-translate-x-1 transition-transform" /> 
@@ -99,7 +101,6 @@ function LearningLabContent() {
           </button>
         </div>
 
-        {/* HERO SECTION */}
         <header className="mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-10">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-4">
@@ -137,12 +138,9 @@ function LearningLabContent() {
           </div>
         </header>
 
-        {/* MODULE GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
           {stories.map((story, index) => {
-            // LOCK LOGIC: Module is locked if it's not the first one AND the previous one isn't done.
             const isLocked = index !== 0 && !completedModules.includes(stories[index - 1].id);
-            
             return (
               <ModuleCard 
                 key={story.id} 
@@ -154,6 +152,27 @@ function LearningLabContent() {
             );
           })}
         </div>
+
+        {/* ADDITIONAL RESOURCES SECTION */}
+        <section className="border-t border-slate-200 pt-16">
+          <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tighter mb-8 flex items-center gap-3">
+            <Video className="text-blue-600" /> Supplemental Briefings
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {resources.map((res) => (
+              <a 
+                key={res.id}
+                href={`https://www.youtube.com/watch?v=${res.youtubeId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white p-6 rounded-2xl border border-slate-200 hover:border-blue-600 transition-all group"
+              >
+                <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-2">Video Resource</p>
+                <h4 className="text-slate-900 font-bold leading-tight group-hover:text-blue-600">{res.title}</h4>
+              </a>
+            ))}
+          </div>
+        </section>
       </div>
     </main>
   );

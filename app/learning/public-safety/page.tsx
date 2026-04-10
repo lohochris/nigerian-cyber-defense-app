@@ -88,7 +88,7 @@ export default function PublicSafety() {
                 </div>
               </div>
               <p className="text-lg text-slate-600 font-medium leading-relaxed">
-                Scammers set up free charging stations in airports, parks, or malls. When you plug in, the USB cable doesn't just charge—it <span className="text-red-600 font-bold">copies your data</span>. It can steal bank app passwords, private photos, and contact lists in seconds. 
+                Scammers set up free charging stations in airports, parks, or malls. When you plug in, the USB cable doesn't just charge it <span className="text-red-600 font-bold">copies your data</span>. It can steal bank app passwords, private photos, and contact lists in seconds. 
               </p>
             </div>
             <DatabaseZap size={200} className="absolute -bottom-10 -right-10 text-slate-50 pointer-events-none" />
@@ -154,7 +154,7 @@ export default function PublicSafety() {
                 </div>
 
                 <p className="text-slate-400 mb-12 font-medium text-lg leading-relaxed max-w-md mx-auto">
-                  You have successfully navigated all 6 modules of the **Naija Cyber-Hub**. Your digital defenses are now active.
+                  You have successfully navigated all 6 modules of the Cyberguard Lab. Your digital defenses are now active.
                 </p>
                 
                 <button 

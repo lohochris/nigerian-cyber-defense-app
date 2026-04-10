@@ -10,7 +10,8 @@ import {
   Smartphone,
   Lock,
   Zap,
-  ArrowRight
+  ArrowRight,
+  ShieldCheck
 } from 'lucide-react'
 
 export default function SimArmorModule() {
@@ -18,7 +19,6 @@ export default function SimArmorModule() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  // Match with your main learning page story ID
   const MODULE_ID = "sim-security";
 
   useEffect(() => {
@@ -27,7 +27,6 @@ export default function SimArmorModule() {
 
   const handleComplete = () => {
     setIsSubmitting(true);
-    
     const savedProgress = localStorage.getItem('completedModules');
     const currentProgress = savedProgress ? JSON.parse(savedProgress) : [];
 
@@ -36,7 +35,6 @@ export default function SimArmorModule() {
       localStorage.setItem('completedModules', JSON.stringify(currentProgress));
     }
 
-    // Security-themed delay
     setTimeout(() => {
       router.push('/learning');
     }, 1200);
@@ -46,21 +44,21 @@ export default function SimArmorModule() {
     {
       title: "The Threat Brief",
       pidgin: "Why you gidi-gidi need SIM PIN",
-      text: "If person tief your phone, dem no need your screen lock. Dem go just pull your SIM, put am for another phone, and use USSD codes (*901#, etc.) take empty your bank account. Your SIM is the key to your money.",
+      text: "If a bad actor steals your phone, they do not need your screen lock. They simply pull your SIM, insert it into another device, and use USSD codes to empty your bank accounts. Your SIM is the physical key to your wealth.",
       icon: <ShieldAlert className="text-red-600" size={28} />,
       bgColor: "bg-red-50"
     },
     {
       title: "The Double-Lock",
       pidgin: "How to set the Armor",
-      text: "Navigate to Settings > Security > SIM Card Lock. Switch it 'ON'. It will ask for a 'Default PIN'. For MTN/Airtel/Glo/9mobile, it is usually '0000' or '1111'. Change it to your own secret 4 digits immediately.",
+      text: "Navigate to Settings > Security > SIM Card Lock. Switch it ON. Use the Default PIN (usually 0000 or 1111 for MTN, Airtel, Glo, or 9mobile). Change it to your unique 4-digit secret immediately.",
       icon: <Settings className="text-blue-600" size={28} />,
       bgColor: "bg-blue-50"
     },
     {
       title: "The PUK Protocol",
-      pidgin: "If you forget your PIN (PUK)",
-      text: "Do not guess more than 3 times! If you lock yourself out, find your original SIM Pack or call your Network Provider to get your PUK code. Too many wrong guesses will 'Burn' (permanently kill) the SIM.",
+      pidgin: "If you forget your PIN",
+      text: "Do not guess more than 3 times. If locked out, locate your original SIM Pack or contact your Network Provider for the PUK code. Excessive wrong guesses will permanently burn the SIM card.",
       icon: <LifeBuoy className="text-amber-600" size={28} />,
       bgColor: "bg-amber-50"
     }
@@ -69,84 +67,86 @@ export default function SimArmorModule() {
   if (!mounted) return null;
 
   return (
-    <main className="min-h-screen bg-slate-50 pb-20">
+    <main className="min-h-screen bg-slate-50 pb-20 selection:bg-blue-100">
       {/* MODULE HEADER */}
-      <header className="bg-slate-900 text-white pt-32 pb-16 px-6 rounded-b-[4rem] shadow-2xl relative overflow-hidden">
+      <header className="bg-slate-950 text-white pt-32 pb-20 px-6 rounded-b-[4rem] shadow-2xl relative overflow-hidden">
         <div className="max-w-4xl mx-auto relative z-10">
           <button 
             onClick={() => router.back()} 
-            className="group flex items-center gap-2 text-blue-400 font-black mb-8 hover:text-white transition-colors uppercase text-[10px] tracking-widest"
+            className="group flex items-center gap-2 text-blue-500 font-black mb-10 hover:text-white transition-colors uppercase text-[10px] tracking-[0.4em]"
           >
             <ChevronLeft size={14} strokeWidth={3} className="group-hover:-translate-x-1 transition-transform" /> 
             Abort Mission
           </button>
           
-          <div className="flex items-center gap-4 mb-4">
-            <span className="bg-blue-600 text-white px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-tighter">
+          <div className="flex items-center gap-4 mb-6">
+            <span className="bg-blue-600 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em]">
               Module 01
             </span>
-            <div className="h-[1px] w-12 bg-slate-700" />
-            <span className="text-slate-400 text-[10px] font-black uppercase tracking-widest">
+            <div className="h-px w-12 bg-slate-800" />
+            <span className="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em]">
               Level: Essential
             </span>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-black mb-6 leading-[0.9] uppercase tracking-tighter">
+          <h1 className="text-5xl md:text-7xl font-black mb-8 leading-[0.85] uppercase tracking-tighter">
             SIM CARD <br/><span className="text-blue-500">ARMOR</span>
           </h1>
-          <p className="text-lg md:text-xl text-slate-400 font-bold max-w-2xl leading-relaxed">
-            Neutralize the #1 way scammers bypass your security. Your phone number is your bank—lock it down.
+          <p className="text-xl text-slate-400 font-bold max-w-2xl leading-snug uppercase text-sm tracking-tight">
+            Neutralize the primary method scammers use to bypass your digital security. Your phone number is your identity—lock it down.
           </p>
         </div>
         
-        {/* Abstract Tech Background */}
-        <Smartphone size={300} className="absolute -bottom-20 -right-20 text-white/5 rotate-12 pointer-events-none" />
+        <Smartphone size={350} className="absolute -bottom-20 -right-20 text-white/5 rotate-12 pointer-events-none" />
       </header>
 
       {/* CONTENT SECTION */}
-      <section className="max-w-4xl mx-auto -mt-10 px-6">
-        <div className="grid gap-6">
+      <section className="max-w-4xl mx-auto -mt-12 px-6">
+        <div className="grid gap-8">
           {steps.map((step, index) => (
-            <div key={index} className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl flex flex-col md:flex-row gap-8 items-start group hover:border-blue-500 transition-all duration-300">
-              <div className={`${step.bgColor} w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110`}>
+            <div key={index} className="bg-white p-8 md:p-12 rounded-[3.5rem] border border-slate-100 shadow-2xl flex flex-col md:flex-row gap-10 items-start group hover:border-blue-500 transition-all duration-500">
+              <div className={`${step.bgColor} w-20 h-20 shrink-0 rounded-[2rem] flex items-center justify-center transition-transform group-hover:rotate-6 shadow-sm`}>
                 {step.icon}
               </div>
               <div>
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">Step 0{index + 1}</span>
-                  <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight">{step.title}</h2>
+                <div className="flex items-center gap-4 mb-3">
+                  <span className="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em]">Step 0{index + 1}</span>
+                  <div className="h-px w-8 bg-slate-100" />
+                  <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">{step.title}</h2>
                 </div>
-                <p className="text-blue-600 font-black mb-4 text-sm uppercase tracking-tight bg-blue-50 inline-block px-3 py-1 rounded-full">
-                   "{step.pidgin}"
-                </p>
-                <p className="text-slate-500 leading-relaxed text-lg font-medium">{step.text}</p>
+                <div className="mb-6">
+                   <p className="text-blue-600 font-black text-[10px] uppercase tracking-[0.2em] bg-blue-50 inline-block px-4 py-1.5 rounded-full border border-blue-100">
+                      {step.pidgin}
+                   </p>
+                </div>
+                <p className="text-slate-500 leading-relaxed text-lg font-bold">{step.text}</p>
               </div>
             </div>
           ))}
         </div>
 
         {/* PROACTIVE ASSIGNMENT */}
-        <div className="mt-12 bg-slate-900 text-white p-10 md:p-14 rounded-[4rem] shadow-2xl relative overflow-hidden border border-slate-800">
+        <div className="mt-16 bg-slate-900 text-white p-10 md:p-16 rounded-[4rem] shadow-2xl relative overflow-hidden border-b-[12px] border-blue-600">
           <div className="relative z-10">
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-10 h-10 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center">
-                <Zap size={20} fill="currentColor" />
+            <div className="flex items-center gap-4 mb-10">
+              <div className="w-12 h-12 bg-blue-600/20 text-blue-500 rounded-2xl flex items-center justify-center border border-blue-500/30">
+                <Zap size={24} fill="currentColor" />
               </div>
-              <h3 className="text-2xl font-black uppercase tracking-tighter">Live Drill: 2-Min Assignment</h3>
+              <h3 className="text-3xl font-black uppercase tracking-tighter">Live Drill: 2-Min Assignment</h3>
             </div>
             
-            <ul className="space-y-6 mb-12">
+            <ul className="space-y-8 mb-16">
               {[
-                "Open Phone Settings > Security now.",
-                "Locate 'SIM Card Lock' protocol.",
-                "Set a PIN (Avoid 0000 or your Birthday).",
-                "Store your PUK code in a physical 'Safe House' (Paper)."
+                "Open Phone Settings > Security immediately",
+                "Locate the SIM Card Lock protocol",
+                "Set a unique PIN (Avoid 0000 or Birthdays)",
+                "Document your PUK code in a physical Safe House"
               ].map((item, i) => (
-                <li key={i} className="flex items-start gap-4 text-lg font-bold group">
-                  <div className="mt-1.5 w-5 h-5 rounded-full border-2 border-green-500 flex items-center justify-center shrink-0 group-hover:bg-green-500 transition-colors">
-                    <div className="w-2 h-2 bg-green-500 group-hover:bg-white rounded-full" />
+                <li key={i} className="flex items-start gap-5 text-xl font-black uppercase tracking-tight group">
+                  <div className="mt-1 w-6 h-6 rounded-lg border-2 border-blue-600 flex items-center justify-center shrink-0 group-hover:bg-blue-600 transition-all">
+                    <div className="w-2 h-2 bg-blue-600 group-hover:bg-white rounded-sm" />
                   </div>
-                  <span className="opacity-90 group-hover:opacity-100 transition-opacity">{item}</span>
+                  <span className="opacity-70 group-hover:opacity-100 transition-opacity">{item}</span>
                 </li>
               ))}
             </ul>
@@ -154,26 +154,26 @@ export default function SimArmorModule() {
             <button 
               onClick={handleComplete}
               disabled={isSubmitting}
-              className={`w-full py-6 rounded-3xl font-black uppercase tracking-[0.2em] text-sm transition-all flex items-center justify-center gap-3 ${
+              className={`w-full py-7 rounded-[2rem] font-black uppercase tracking-[0.3em] text-xs transition-all flex items-center justify-center gap-4 ${
                 isSubmitting 
                 ? 'bg-slate-800 cursor-not-allowed text-slate-500 border border-slate-700' 
-                : 'bg-blue-600 text-white hover:bg-white hover:text-slate-900 shadow-[0_20px_50px_rgba(37,99,235,0.3)] active:scale-95'
+                : 'bg-blue-600 text-white hover:bg-white hover:text-slate-900 shadow-2xl shadow-blue-600/20 active:scale-95'
               }`}
             >
               {isSubmitting ? (
-                <>Synchronizing Progress... <Lock size={16} className="animate-pulse" /></>
+                <>Synchronizing Progress... <Lock size={18} className="animate-pulse" /></>
               ) : (
-                <>Upload Completion Data <ArrowRight size={18} /></>
+                <>Upload Completion Data <ArrowRight size={20} /></>
               )}
             </button>
           </div>
           
-          <CheckCircle2 size={300} className="absolute -bottom-20 -left-20 text-green-500/5 -rotate-12 pointer-events-none" />
+          <ShieldCheck size={350} className="absolute -bottom-20 -left-20 text-blue-600/5 -rotate-12 pointer-events-none" />
         </div>
       </section>
 
-      <footer className="mt-20 text-center text-slate-400 font-black uppercase tracking-[0.5em] text-[10px] animate-pulse">
-        Secure Infrastructure V1.0.4 // Progress Verified
+      <footer className="mt-24 text-center text-slate-400 font-black uppercase tracking-[0.6em] text-[10px]">
+        Secure Infrastructure V1.0.4 // Progress Verified // 2026
       </footer>
     </main>
   )
