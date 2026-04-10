@@ -121,7 +121,8 @@ export default function Navbar() {
                 onClick={toggleLang} 
                 className="nav-lab-btn group cursor-pointer"
               >
-                <span className="text-slate-600 group-hover:text-blue-600 transition-colors">LANG:</span>
+                {/* Fixed Hover logic: Added group-hover to prefix */}
+                <span className="text-slate-600 transition-colors group-hover:text-blue-600">LANG:</span>
                 <span className={`${isPidgin ? "text-green-600" : "text-blue-600"} font-black`}>
                   {isPidgin ? "PDG" : "ENG"}
                 </span>
@@ -133,18 +134,18 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* MOBILE TOGGLE */}
+          {/* MOBILE TOGGLE - Enhanced Visibility when open */}
           <button 
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className={`lg:hidden p-2 rounded-lg z-[110] transition-all cursor-pointer ${isMenuOpen ? 'text-white bg-white/10' : 'text-slate-900 bg-slate-100'}`}
+            className={`lg:hidden p-2 rounded-lg z-[110] transition-all cursor-pointer ${isMenuOpen ? 'text-white bg-white/20' : 'text-slate-900 bg-slate-100'}`}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
-        {/* MOBILE MENU OVERLAY */}
+        {/* MOBILE MENU OVERLAY - Added explicit background and padding */}
         <div className={`
-          fixed inset-0 bg-slate-900 z-[100] lg:hidden flex flex-col pt-32 px-8 transition-all duration-500 ease-in-out
+          fixed inset-0 bg-slate-950 z-[100] lg:hidden flex flex-col pt-32 px-8 transition-all duration-500 ease-in-out
           ${isMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0 pointer-events-none'}
         `}>
           <div className="flex flex-col gap-4">
@@ -179,21 +180,30 @@ export default function Navbar() {
       </nav>
 
       <style jsx>{`
+        /* DESKTOP BUTTONS: Fixed Hover color change */
         .nav-lab-btn {
           @apply flex items-center gap-2 px-5 py-2.5 border border-slate-200 rounded-lg 
-                 hover:border-blue-600 hover:text-blue-600 hover:bg-blue-50/30 transition-all duration-200 
+                 hover:border-blue-600 hover:text-blue-600 hover:bg-blue-50/50 transition-all duration-200 
                  cursor-pointer text-[10px] font-bold uppercase text-slate-700 
                  active:scale-95 hover:shadow-sm;
         }
+        
+        /* LANGUAGE BUTTON PREFIX: Force blue on hover */
+        .nav-lab-btn.group:hover .text-slate-600 {
+          @apply text-blue-600;
+        }
+
         .enter-lab-btn {
           @apply bg-slate-900 text-white px-6 py-2.5 rounded-lg text-[10px] font-bold uppercase 
                  hover:bg-blue-600 transition-all duration-200 flex items-center gap-2 
                  shadow-md active:scale-95 cursor-pointer;
         }
+        
+        /* MOBILE MENU BUTTONS: Forced Visibility (White text) */
         .mobile-lab-btn {
-          @apply flex items-center gap-5 p-6 border border-white/10 rounded-2xl text-xl 
-                 font-bold uppercase tracking-tight text-white active:text-blue-400 
-                 hover:text-blue-400 transition-all cursor-pointer active:scale-95;
+          @apply flex items-center gap-5 p-6 border border-white/20 rounded-2xl text-xl 
+                 font-bold uppercase tracking-tight text-white/90 active:text-blue-400 
+                 hover:text-blue-400 transition-all cursor-pointer active:scale-95 bg-slate-900/50;
         }
       `}</style>
     </header>
